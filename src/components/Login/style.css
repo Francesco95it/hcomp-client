@@ -1,0 +1,24 @@
+.social-buttons {
+    width:250px;
+    line-height: 40px;
+    border: 1px solid rgba(0,0,0,.1);
+    color: rgba(0,0,0,.6);
+    margin:10px 0;
+    text-decoration: none;
+    color: white;
+}
+
+.color-facebook {
+    background-color: #3b5998
+}
+.color-google {
+    background-color: #dd4b39
+}
+
+.h1Style {
+    margin-bottom: 40px
+}
+
+.error {
+    color: red;
+}

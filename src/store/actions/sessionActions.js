@@ -3,9 +3,10 @@ import axios from 'axios'
 
 export const login = (data) => {
     return () => {
-        return sessionService.saveSession( data.userId ) //change to userId
+        return sessionService.saveSession( data.data.userId ) //change to userId
         .then(() => {
-            axios.post('/api/auth', data)
+            //TODO: API CALL
+            axios.post('https://hsoc.herokuapp.com/auth/login', data)
             sessionService.saveUser(data.data)
             .then(() => {
                 console.log("Logged in");
