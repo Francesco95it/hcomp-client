@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 
-import {Segment, Rail, Image, Button} from 'semantic-ui-react'
+import {Segment, Image, Button} from 'semantic-ui-react'
 
 class Login extends Component {
     componentWillMount(){
