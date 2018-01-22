@@ -1,8 +1,21 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
 
-export default class Homepage extends Component {    
+import Header from './MainHeader'
+
+class Homepage extends Component {
 
     render(){
-        return <h1>Homepage</h1>
+        return <Header {...this.props}/>
     }
 }
+
+
+function mapStateToProps(state) {
+    return {
+        session: state.session,
+        user: state.user,
+    };
+}
+
+export default connect(mapStateToProps)(Homepage);

@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 
 import { logout } from '../../store/actions/sessionActions'
 
-import {Menu, Dropdown} from 'semantic-ui-react'
+import {Menu, Dropdown, Icon} from 'semantic-ui-react'
 
 class Navbar extends Component {
 
@@ -31,8 +31,8 @@ class Navbar extends Component {
             loginButton =
                 <Dropdown item text={this.props.session.user.name}>
                     <Dropdown.Menu>
-                        <Dropdown.Item as={Link} to='/profile' text="Profile" />
-                        <Dropdown.Item onClick={this.onLogoutClick} text="Logout" />
+                        <Dropdown.Item as={Link} to={`/profile/${this.props.session.user.userID}`} ><Icon name="user circle"/> Profile</Dropdown.Item>
+                        <Dropdown.Item onClick={this.onLogoutClick}><Icon name="external" /> Logout</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
         }

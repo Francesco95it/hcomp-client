@@ -5,6 +5,7 @@ import {Provider} from 'react-redux'
 
 import Homepage from './components/Homepage/Homepage.js';
 import Login from './components/Login/Login.js';
+import Profile from './components/Profile/Profile.js';
 import AuthRoute from './components/AuthRoute/AuthRoute.js';
 import Navbar from './components/Navbar/Navbar.js';
 import NotFound from './components/NotFound/NotFound.js';
@@ -22,7 +23,8 @@ ReactDOM.render(
                     <Route exact path='/' component={Homepage} />
                     <Route path='/login' component={Login} />
                     <AuthRoute back={'/'}>
-                        <Route path='/profile' component={Login} />
+                        <Route exact path='/profile' component={Profile} />
+                        <Route path='/profile/:id' component={Profile} />
                     </AuthRoute>
                     <Route path='*' component={NotFound} />
                 </Switch>
