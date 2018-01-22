@@ -12,6 +12,10 @@ import './style.css'
 
 class Login extends Component {
 
+    segmentStyle = {
+        marginTop: '0'
+    }
+
     constructor(props){
         super(props);
         this.state = {
@@ -86,7 +90,7 @@ class Login extends Component {
         let loginErr;
         if(this.state.loginError) loginErr=<h4 className="error">Something went wrong. Please login again.</h4>
         return (
-            <Segment textAlign='center'>
+            <Segment textAlign='center' style={this.segmentStyle}>
                 <h1 className="h1Style">Login with your social account</h1>
                 {loginErr}
                 <FacebookLogin
