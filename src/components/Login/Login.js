@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import {Redirect} from 'react-router-dom'
 
 import FacebookLogin from 'react-facebook-login'
 import GoogleLogin from 'react-google-login';
@@ -20,7 +21,8 @@ class Login extends Component {
         super(props);
         this.state = {
             isWriter: false,
-            loginError: false
+            loginError: false,
+            loginSuccess: false
         };
         this.setWriter = this.setWriter.bind(this);
         this.responseFacebook = this.responseFacebook.bind(this);
@@ -44,7 +46,8 @@ class Login extends Component {
         } else {
             this.setState({
                 ...this.state,
-                loginError: false
+                loginError: false,
+                loginSuccess: true
             });
             this.props.dispatch(login({
                 data: {...response},
@@ -70,7 +73,8 @@ class Login extends Component {
         } else {
             this.setState({
                 ...this.state,
-                loginError: false
+                loginError: false,
+                loginSuccess: true
             });
             this.props.dispatch(login({
                 data: {...response},
@@ -89,6 +93,7 @@ class Login extends Component {
     render(){
         let loginErr;
         if(this.state.loginError) loginErr=<h4 className="error">Something went wrong. Please login again.</h4>
+        if(this.state.loginSuccess) return <Redirect to='/profile' />
         return (
             <Segment textAlign='center' style={this.segmentStyle}>
                 <h1 className="h1Style">Login with your social account</h1>
