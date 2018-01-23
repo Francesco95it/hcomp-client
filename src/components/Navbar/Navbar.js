@@ -31,7 +31,7 @@ class Navbar extends Component {
             loginButton =
                 <Dropdown item text={this.props.session.user.name}>
                     <Dropdown.Menu>
-                        <Dropdown.Item as={Link} to={`/profile/${this.props.session.user.userID}`} ><Icon name="user circle"/> Profile</Dropdown.Item>
+                        <Dropdown.Item as={Link} to={`/profile/${this.props.session.user.id}`} ><Icon name="user circle"/> Profile</Dropdown.Item>
                         <Dropdown.Item onClick={this.onLogoutClick}><Icon name="external" /> Logout</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>

@@ -51,12 +51,12 @@ class Login extends Component {
                 type: 'facebook',
                 isWriter: this.state.isWriter
             }))
-            console.log(response);
-            console.log({
-                data: {...response},
-                type: 'facebook',
-                isWriter: this.state.isWriter
-            });
+            // console.log(response);
+            // console.log({
+            //     data: {...response},
+            //     type: 'facebook',
+            //     isWriter: this.state.isWriter
+            // });
         }
     }
 
@@ -76,13 +76,13 @@ class Login extends Component {
                 data: {...response},
                 type: 'google',
                 isWriter: this.state.isWriter
-            }))
-            console.log(response);
-            console.log({
-                data: {...response},
-                type: 'google',
-                isWriter: this.state.isWriter
-            });
+            }));
+            // console.log(response);
+            // console.log({
+            //     data: {...response},
+            //     type: 'google',
+            //     isWriter: this.state.isWriter
+            // });
         }
     }
 

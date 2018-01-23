@@ -13,7 +13,7 @@ class Login extends Component {
         let user = this.props.session.user;
         return (
             <Segment textAlign='left'>
-                <Image src={user.picture.data.url} floated='right' width='100px' style={{marginTop: '15px'}}/>
+                <Image src={user.imageURL} floated='right' width='100px' style={{marginTop: '15px'}}/>
                 <h1>{user.name}</h1>
                 <h4>Email: {user.email} <Button compact size='mini' style={{marginLeft: '10px'}}>Change</Button></h4>
                 <h4>Member since: 11/11/2017</h4>
