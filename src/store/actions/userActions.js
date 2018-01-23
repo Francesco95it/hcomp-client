@@ -16,5 +16,5 @@ export const FETCH_USER = 'FETCH_USER'
 */
 
 export function fetch_user(id) {
-    return { type: FETCH_USER, payload: axios.get("LINK"+id)};
+    return { type: FETCH_USER, payload: axios.get(`https://hsoc.herokuapp.com/users/${id}`)};
 }
