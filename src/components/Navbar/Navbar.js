@@ -28,10 +28,18 @@ class Navbar extends Component {
     render() {
         let loginButton = <Menu.Item as={Link} to='/login' name='Login' />
         if(this.props.session.authenticated) {
+            let createTask = "";
+            let manageTasks = "";
+            if (this.props.session.user.isWriter) {
+                createTask = <Dropdown.Item><Icon name="add circle" /> Create Task</Dropdown.Item>
+                manageTasks = <Dropdown.Item><Icon name="tasks" /> Manage Tasks</Dropdown.Item>
+            }
             loginButton =
                 <Dropdown item text={this.props.session.user.name}>
                     <Dropdown.Menu>
                         <Dropdown.Item as={Link} to={`/profile/${this.props.session.user.id}`} ><Icon name="user circle"/> Profile</Dropdown.Item>
+                        {createTask}
+                        {manageTasks}
                         <Dropdown.Item onClick={this.onLogoutClick}><Icon name="external" /> Logout</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>

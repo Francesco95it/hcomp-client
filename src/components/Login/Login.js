@@ -93,7 +93,7 @@ class Login extends Component {
     render(){
         let loginErr;
         if(this.state.loginError) loginErr=<h4 className="error">Something went wrong. Please login again.</h4>
-        if(this.state.loginSuccess) return <Redirect to='/profile' />
+        if(this.state.loginSuccess) return <Redirect to='/' />
         return (
             <Segment textAlign='center' style={this.segmentStyle}>
                 <h1 className="h1Style">Login with your social account</h1>

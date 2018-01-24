@@ -25,8 +25,9 @@ class MainHeader extends Component {
             // USER AUTHENTICATED. RENDER STATS OR SOMETHING
             return (<Segment inverted vertical padded='very' textAlign='center' style={segmentStyle}>
                 <div style={divStyle}>
-                    <Icon name='dashboard' size='massive' />
+                    <Icon name='home' size='massive' />
                     <h1>Welcome {this.props.session.user.name}.</h1>
+                    <h4 style={{marginTop: '5px'}}>Your friends news will be displayed here</h4>
                     <Button basic animated color='yellow' size='big' as={Link} to="/profile">
                         <Button.Content visible>Go to your profile</Button.Content>
                         <Button.Content hidden>
@@ -39,7 +40,7 @@ class MainHeader extends Component {
 
         return (<Segment inverted vertical padded='very' textAlign='center' style={segmentStyle}>
             <div style={divStyle}>
-                <Icon name='dashboard' size='massive' />
+                <Icon name='pencil' size='massive' />
                 <h1>Help people. Help science. Earn money.</h1>
                 <Button basic animated color='yellow' size='big'>
                     <Button.Content visible>Get Started</Button.Content>

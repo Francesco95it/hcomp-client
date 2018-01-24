@@ -3,6 +3,8 @@ import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import { sessionService } from 'redux-react-session'
 
+import {Segment} from 'semantic-ui-react'
+
 class AuthRoute extends React.Component {
 
     constructor(props){
@@ -26,7 +28,7 @@ class AuthRoute extends React.Component {
             if (this.props.session.authenticated) return this.props.children;
             return <Redirect to={this.props.back} />
         }
-        return null;
+        return <Segment loading style={{minHeight: '200px'}} />
     }
 }
 
