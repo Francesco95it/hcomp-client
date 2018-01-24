@@ -20,7 +20,13 @@ class AuthRoute extends React.Component {
             this.setState({
                 sessionLoaded: true
             });
-        });
+        })
+        .catch((err)=>{
+            console.log("Error loading user: ",err);
+            this.setState({
+                sessionLoaded: true
+            });
+        })
     }
 
     render(){
