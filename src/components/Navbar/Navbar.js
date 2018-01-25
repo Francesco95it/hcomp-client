@@ -31,7 +31,7 @@ class Navbar extends Component {
             let createTask = "";
             let manageTasks = "";
             if (this.props.session.user.isWriter) {
-                createTask = <Dropdown.Item><Icon name="add circle" /> Create Task</Dropdown.Item>
+                createTask = <Dropdown.Item as={Link} to='/createTask'><Icon name="add circle" /> Create Task</Dropdown.Item>
                 manageTasks = <Dropdown.Item><Icon name="tasks" /> Manage Tasks</Dropdown.Item>
             }
             loginButton =

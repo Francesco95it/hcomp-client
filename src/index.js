@@ -8,7 +8,9 @@ import Homepage from './components/Homepage/Homepage.js';
 import Login from './components/Login/Login.js';
 import Profile from './components/Profile/Profile.js';
 import AuthRoute from './components/AuthRoute/AuthRoute.js';
+import AuthWriterRoute from './components/AuthRoute/AuthWriterRoute.js';
 import Navbar from './components/Navbar/Navbar.js';
+import CreateTask from './components/CreateTask/CreateTask.js';
 import NotFound from './components/NotFound/NotFound.js';
 
 
@@ -28,6 +30,9 @@ ReactDOM.render(
                     <AuthRoute back={'/'}>
                         <Route exact path='/profile' component={Profile} />
                         <Route path='/profile/:id' component={Profile} />
+                        <AuthWriterRoute back={'/'} >
+                            <Route path='/createTask' component={CreateTask} />
+                        </AuthWriterRoute>
                     </AuthRoute>
                     <Route path='*' component={NotFound} />
                 </Switch>
