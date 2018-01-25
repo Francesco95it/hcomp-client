@@ -1,10 +1,12 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import { sessionService } from 'redux-react-session'
 
 import { fetch_user } from '../../store/actions/userActions'
 
 import {Segment, Image, Button} from 'semantic-ui-react'
 import moment from 'moment'
+import axios from 'axios'
 
 class Profile extends Component {
 
@@ -15,16 +17,23 @@ class Profile extends Component {
         }
     }
 
+
+    onChangeClick(){
+        axios.get('/users/1').then((data) => console.log(data)).catch(err=>console.error(err));
+    }
+
     componentWillMount(){
-        //TODO: fetch user data
-        console.log(this.props.match.params.id);
-        if(this.props.match.params.id) {
-            this.setState({
-            ...this.state,
-            personalProfile: false
-            });
-            this.props.dispatch(fetch_user(this.props.match.params.id));
-        }
+        // console.log(this.props.match.params.id);
+        console.log("Axios defaults headers: ", axios.defaults.headers);
+        sessionService.loadUser().then(()=>{
+            if(this.props.match.params.id) {
+                this.setState({
+                    ...this.state,
+                    personalProfile: false
+                });
+                this.props.dispatch(fetch_user(this.props.match.params.id));
+            }
+        })
     }
 
     render(){
@@ -34,7 +43,7 @@ class Profile extends Component {
                 <Segment textAlign='left' style={{padding: '15px 60px', marginTop: '0'}}>
                 <Image src={user.imageURL} floated='right' width='100px' style={{marginTop: '15px'}}/>
                 <h1 style={{marginTop: '10px'}}>{user.name}</h1>
-                <h4>Email: {user.email} <Button compact size='mini' style={{marginLeft: '10px'}}>Change</Button></h4>
+                <h4>Email: {user.email} <Button compact size='mini' style={{marginLeft: '10px'}} onClick={this.onChangeClick}>Change</Button></h4>
                 <h2>Statistics:</h2>
                 <p>One day we will return some stats</p>
                 </Segment>

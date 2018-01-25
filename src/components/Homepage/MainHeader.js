@@ -2,10 +2,15 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 
 import {Segment, Icon, Button} from 'semantic-ui-react'
+import axios from 'axios'
 
 import backgroundImage from './background.jpeg'
 
 class MainHeader extends Component {
+
+    onChangeClick(){
+        axios.get('/users/1').then((data) => console.log(data)).catch(err=>console.error(err));
+    }
 
     render(){
         const segmentStyle = {
@@ -38,11 +43,13 @@ class MainHeader extends Component {
             </Segment>)
         }
 
+        //NO USER LOGGED IN, PRESENTATION PAGE
+
         return (<Segment inverted vertical padded='very' textAlign='center' style={segmentStyle}>
             <div style={divStyle}>
                 <Icon name='pencil' size='massive' />
                 <h1>Help people. Help science. Earn money.</h1>
-                <Button basic animated color='yellow' size='big'>
+                <Button basic animated color='yellow' size='big' onClick={this.onChangeClick}>
                     <Button.Content visible>Get Started</Button.Content>
                     <Button.Content hidden>
                         <Icon name='right arrow' />

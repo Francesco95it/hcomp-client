@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter, Route, Switch} from 'react-router-dom'
 import {Provider} from 'react-redux'
+import axios from 'axios'
 
 import Homepage from './components/Homepage/Homepage.js';
 import Login from './components/Login/Login.js';
@@ -10,9 +11,11 @@ import AuthRoute from './components/AuthRoute/AuthRoute.js';
 import Navbar from './components/Navbar/Navbar.js';
 import NotFound from './components/NotFound/NotFound.js';
 
+
 import '../node_modules/semantic-ui-css/semantic.min.css';
 import store from './store/store'
 
+axios.defaults.baseURL = 'https://hsoc.herokuapp.com';
 
 ReactDOM.render(
     <Provider store={store}>

@@ -1,4 +1,3 @@
-
 function userState(state = {
     user: null,
     fetching: false,

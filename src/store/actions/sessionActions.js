@@ -1,40 +1,49 @@
 import { sessionService } from 'redux-react-session'
 import axios from 'axios'
 
-const dataHandler = (data, id) => {
+const dataHandler = (data, serverData) => {
     if(data.type === 'facebook') {
         return {
-            'id': id,
+            'id': serverData.id,
+            'jwt': serverData.jwt,
             'name': data.data.name,
             'email': data.data.email,
             'imageURL': data.data.picture.data.url,
-            'isWriter': data.isWriter
+            'isWriter': data.isWriter,
+            'expiresAt': new Date().getTime()+86400000
         }
     }
     return {
-        'id': id,
+        'id': serverData.id,
+        'jwt': serverData.jwt,
         'name': data.data.profileObj.name,
         'email': data.data.profileObj.email,
         'imageURL': data.data.profileObj.imageUrl,
-        'isWriter': data.isWriter
+        'isWriter': data.isWriter,
+        'expiresAt': new Date().getTime()+86400000
     }
 }
 
 export const login = (data) => {
     return () => {
-        axios.post('https://hsoc.herokuapp.com/auth/login', data)
+        axios.post('/auth/login', data)
         .then((res) => {
-            const userData = dataHandler(data, res.data)
-            //console.log("dataHandler: ", userData)
-            return sessionService.saveSession( userData.id )
-            .then(() => {
-                //TODO: Create user structure to be same btw google-fb
-                sessionService.saveUser(userData)
+            console.log("RES.DATA: ", res.data);
+            if (!res.data.error){
+                const userData = dataHandler(data, res.data)
+                //console.log("dataHandler: ", userData)
+                return sessionService.saveSession( userData.id )
                 .then(() => {
-                    console.log("Logged in");
+                    //TODO: Create user structure to be same btw google-fb
+                    sessionService.saveUser(userData)
+                    .then(() => {
+                        console.log("Logged in");
+                    }).catch(err => console.error(err));
                 }).catch(err => console.error(err));
-            }).catch(err => console.error(err));
-        })
+            } else {
+                window.confirm("Error logging in. Please try again.");
+            }
+        }).catch(err => console.error(err))
     };
 };
 
