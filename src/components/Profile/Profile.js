@@ -6,9 +6,20 @@ import { fetch_user } from '../../store/actions/userActions'
 
 import {Segment, Image, Button} from 'semantic-ui-react'
 import moment from 'moment'
-import axios from 'axios'
 
 class Profile extends Component {
+
+    loadingSegm = {
+        minHeight: '200px'
+    }
+
+    segmentAdj = {
+        paddingTop: '5px',
+        paddingBottom: '15px',
+        paddingRight: '60px',
+        paddingLeft: '60px',
+        marginTop: '0'
+    }
 
     constructor(props){
         super(props);
@@ -17,14 +28,8 @@ class Profile extends Component {
         }
     }
 
-
-    onChangeClick(){
-        axios.get('/users/1').then((data) => console.log(data)).catch(err=>console.error(err));
-    }
-
     componentWillMount(){
         // console.log(this.props.match.params.id);
-        console.log("Axios defaults headers: ", axios.defaults.headers);
         sessionService.loadUser().then(()=>{
             if(this.props.match.params.id) {
                 this.setState({
@@ -40,10 +45,10 @@ class Profile extends Component {
         if(this.state.personalProfile){
             let user = this.props.session.user;
             return (
-                <Segment textAlign='left' style={{padding: '15px 60px', marginTop: '0'}}>
+                <Segment textAlign='left' style={this.segmentAdj}>
                 <Image src={user.imageURL} floated='right' width='100px' style={{marginTop: '15px'}}/>
                 <h1 style={{marginTop: '10px'}}>{user.name}</h1>
-                <h4>Email: {user.email} <Button compact size='mini' style={{marginLeft: '10px'}} onClick={this.onChangeClick}>Change</Button></h4>
+                <h4>Email: {user.email} <Button compact size='mini' style={{marginLeft: '10px'}}>Change</Button></h4>
                 <h2>Statistics:</h2>
                 <p>One day we will return some stats</p>
                 </Segment>
@@ -56,14 +61,14 @@ class Profile extends Component {
                 <h1 style={{color: 'red'}}>An error has appened. Please try again or contact us</h1>
             </Segment>
         );
-        if(!this.props.user.fetched) return <Segment loading style={{minHeight: '200px'}} />
+        if(!this.props.user.fetched) return <Segment loading style={this.loadingSegm} />
 
 
         //USER PAGE (NOT SELF PROFILE)
 
         let user = this.props.user.user;
         return (
-            <Segment textAlign='left' style={{padding: '15px 60px', marginTop: '0'}}>
+            <Segment textAlign='left' style={this.segmentAdj}>
             <Image src={user.img} floated='right' width='100px' style={{marginTop: '15px'}}/>
             <h1>{user.name}</h1>
             <h4>Email: {user.email}</h4>
