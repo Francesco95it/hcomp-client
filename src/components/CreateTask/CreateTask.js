@@ -40,7 +40,7 @@ class CreateTask extends Component {
     pageSelected(){
         switch (this.state.activeItem) {
             case 'General':
-                return <General {...this.props} title={this.state.task.title} titleChanged={this.titleChanged}/>
+                return <General {...this.props} values={this.props.createTask.task.general} titleChanged={this.titleChanged}/>
             case 'Runs':
                 return <Runs {...this.props} />
             case 'Tutorial':
@@ -89,6 +89,7 @@ function mapStateToProps(state) {
     return {
         session: state.session,
         user: state.user,
+        createTask: state.createTask
     };
 }
 

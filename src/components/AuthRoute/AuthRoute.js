@@ -15,25 +15,20 @@ class AuthRoute extends React.Component {
     }
 
     componentWillMount(){
-        sessionService.loadUser()
-        .then(() => {
-            this.setState({
-                sessionLoaded: true
-            });
-        })
-        .catch((err)=>{
-            console.log("Error loading user: ",err);
-            this.setState({
-                sessionLoaded: true
-            });
-        })
     }
 
     render(){
+        sessionService.loadUser()
+        .then(() => {
+            this.setState({sessionLoaded: true});
+        })
+        .catch((err)=>{
+            console.log("Error loading user: ",err);
+            this.setState({sessionLoaded: true});
+        });
         if(this.state.sessionLoaded){
             if (this.props.session.authenticated) return this.props.children;
-            return <Redirect to={this.props.back} />
-        }
+            else return <Redirect to={this.props.back} />}
         return <Segment loading style={{minHeight: '200px'}} />
     }
 }
