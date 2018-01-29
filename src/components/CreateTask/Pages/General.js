@@ -13,7 +13,7 @@ export default class General extends Component {
     }
     dzStyle = {
         padding: '5px',
-        minHeight: '80px',
+        minHeight: '100px',
         border: '1px solid cadetblue',
         borderRadius: '5px',
         textAlign: 'center',
@@ -42,10 +42,11 @@ export default class General extends Component {
     }
 
     render(){
-        console.log(this.state);
-
         let dropzone = (
-            <Icon name='add circle' size='big' style={{marginTop: '20px'}} />
+            <div>
+                <Icon name='add circle' size='big' style={{marginTop: '30px'}} />
+                <p>Drop an image or click here to browse</p>
+            </div>
         );
         try {
             if(this.state.images.length > 0) {
@@ -67,6 +68,9 @@ export default class General extends Component {
                         <Header content='Project title' size='small' sub/>
                         <Input type="text" value={this.state.title} onChange={(e)=> {this.setState({...this.state, title: e.target.value}); this.props.titleChanged(e);}} style={this.inputStyle}/>
                         <p>Set your project title</p>
+                        <Header content='Description' size='small' sub/>
+                        <Input type="text" value={this.state.description} onChange={(e)=> this.setState({...this.state, description: e.target.value})} style={this.inputStyle}/>
+                        <p>Describe your project in one line</p>
                     </div>
                     </Grid.Column>
                     <Grid.Column stretched width={6}>
@@ -79,11 +83,6 @@ export default class General extends Component {
                         </div>
 
                         <p>The avatar represents your project with an image</p>
-                    </Grid.Column>
-                    <Grid.Column stretched width={16}>
-                        <Header content='Description' size='small' sub/>
-                        <Input type="text" value={this.state.description} onChange={(e)=> this.setState({...this.state, description: e.target.value})} style={this.inputStyle}/>
-                        <p>Describe your project in one line</p>
                     </Grid.Column>
                     <Grid.Column stretched width={16}>
                         <Header content='Introduction' size='small' sub/>

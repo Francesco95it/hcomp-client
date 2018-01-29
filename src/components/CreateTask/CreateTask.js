@@ -33,6 +33,7 @@ class CreateTask extends Component {
         this.handleItemClick = this.handleItemClick.bind(this);
         this.pageSelected = this.pageSelected.bind(this);
         this.titleChanged = this.titleChanged.bind(this);
+        this.unLoad = this.unLoad.bind(this);
     }
 
     handleItemClick = (e, { name }) => this.setState({ ...this.state, activeItem: name })
@@ -42,13 +43,13 @@ class CreateTask extends Component {
             case 'General':
                 return <General {...this.props} values={this.props.createTask.task.general} titleChanged={this.titleChanged}/>
             case 'Runs':
-                return <Runs {...this.props} />
+                return <Runs {...this.props} values={this.props.createTask.task.runs}/>
             case 'Tutorial':
-                return <Tutorial {...this.props} />
+                return <Tutorial {...this.props} values={this.props.createTask.task.tutorial}/>
             case 'Status':
-                return <Status {...this.props} />
+                return <Status {...this.props} values={this.props.createTask.task.status}/>
             case 'Collaborators':
-                return <Collaborators {...this.props} />
+                return <Collaborators {...this.props} values={this.props.createTask.task.collaborators}/>
             default:
                 return null
         }
@@ -61,6 +62,22 @@ class CreateTask extends Component {
                 title: e.target.value
             }
         })
+    }
+
+    unLoad(e){
+        // eslint-disable-next-line
+        var confirmationMessage = "\o/";
+
+        (e || window.event).returnValue = confirmationMessage;
+        return confirmationMessage;
+    }
+
+    componentDidMount(){
+        window.addEventListener('beforeunload', this.unLoad);
+    }
+
+    componentWillUnmount(){
+        window.removeEventListener('beforeunload', this.unLoad);
     }
 
     render() {
