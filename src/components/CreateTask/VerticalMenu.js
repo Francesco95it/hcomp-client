@@ -13,11 +13,12 @@ export default class VerticalMenu extends Component {
         const activeItem = this.props.activeItem;
 
         return (
-            <Menu fluid vertical tabular>
+            <Menu fluid vertical tabular='right'>
                 <Menu.Item name='General' active={activeItem === 'General'} onClick={this.handleItemClick} />
-                <Menu.Item name='pics' active={activeItem === 'pics'} onClick={this.handleItemClick} />
-                <Menu.Item name='companies' active={activeItem === 'companies'} onClick={this.handleItemClick} />
-                <Menu.Item name='links' active={activeItem === 'links'} onClick={this.handleItemClick} />
+                <Menu.Item name='Runs' active={activeItem === 'Runs'} onClick={this.handleItemClick} />
+                <Menu.Item name='Tutorial' active={activeItem === 'Tutorial'} onClick={this.handleItemClick} />
+                <Menu.Item name='Collaborators' active={activeItem === 'Collaborators'} onClick={this.handleItemClick} />
+                <Menu.Item name='Status' active={activeItem === 'Status'} onClick={this.handleItemClick} />
             </Menu>)
     }
 
