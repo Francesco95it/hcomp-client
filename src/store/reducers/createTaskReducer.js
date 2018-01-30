@@ -19,10 +19,13 @@ function createTaskState(state = {
     switch (action.type) {
 
         case "SET_GENERAL":
-        return {...state, task: {general: action.payload}};
+        return {task: {...state.task, general: action.payload}};
+
+        case "SET_GENERAL_TITLE":
+        return {task: {...state.task, general: {title: (action.payload===""? "No name task" : action.payload )}}};
 
         case "SET_RUNS":
-        return {...state, task:{runs: action.payload}};
+        return {task:{...state.task, runs: action.payload}};
 
         case "SET_COLLABORATORS":
         return {...state, task:{collaborators: action.payload}};

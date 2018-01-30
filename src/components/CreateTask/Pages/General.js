@@ -1,7 +1,5 @@
 import React, {Component} from 'react'
 
-import { set_general } from '../../../store/actions/createTaskActions'
-
 import {Form, Input, TextArea, Grid, Header, Image, Icon} from 'semantic-ui-react'
 import Dropzone from 'react-dropzone'
 
@@ -16,22 +14,24 @@ export default class General extends Component {
         minHeight: '100px',
         border: '1px solid cadetblue',
         borderRadius: '5px',
-        textAlign: 'center',
-        verticalAlign: 'center'
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 
     constructor(props){
         super(props);
+        console.log(props);
         this.state = {
-            title: props.values.title,
-            description: props.values.description,
-            introduction: props.values.introduction,
-            images: props.values.images
+            title: props.task.general.title,
+            description: props.task.general.description,
+            introduction: props.task.general.introduction,
+            images: props.task.general.images
         }
     }
 
     componentWillUnmount(){
-        this.props.dispatch(set_general(this.state));
+        this.props.setGeneral(this.state);
     }
 
     onDrop(files) {
@@ -43,8 +43,8 @@ export default class General extends Component {
 
     render(){
         let dropzone = (
-            <div>
-                <Icon name='add circle' size='big' style={{marginTop: '30px'}} />
+            <div style={{textAlign: 'center'}}>
+                <Icon name='add circle' size='big' />
                 <p>Drop an image or click here to browse</p>
             </div>
         );
@@ -66,7 +66,7 @@ export default class General extends Component {
                     <Grid.Column stretched width={10}>
                     <div>
                         <Header content='Project title' size='small' sub/>
-                        <Input type="text" value={this.state.title} onChange={(e)=> {this.setState({...this.state, title: e.target.value}); this.props.titleChanged(e);}} style={this.inputStyle}/>
+                        <Input type="text" value={this.state.title} onChange={(e)=> {this.setState({...this.state, title: e.target.value}); this.props.setGeneralTitle(e.target.value)}} style={this.inputStyle}/>
                         <p>Set your project title</p>
                         <Header content='Description' size='small' sub/>
                         <Input type="text" value={this.state.description} onChange={(e)=> this.setState({...this.state, description: e.target.value})} style={this.inputStyle}/>
