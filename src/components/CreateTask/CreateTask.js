@@ -26,6 +26,7 @@ class CreateTask extends Component {
         super(props);
         this.state = {
             activeItem: 'General',
+            isSaved: true,
             task: {
                 title: 'No name task'
             }
@@ -72,16 +73,26 @@ class CreateTask extends Component {
         return confirmationMessage;
     }
 
-    componentDidMount(){
+
+    addBlock(){
         window.addEventListener('beforeunload', this.unLoad);
     }
 
-    componentWillUnmount(){
+    removeBlock(){
         window.removeEventListener('beforeunload', this.unLoad);
     }
 
+    componentDidMount(){
+        this.addBlock();
+    }
+
+    componentWillUnmount(){
+        this.removeBlock();
+    }
+
     render() {
-        //MENU A DESTRA, COLORATO
+        //CHANGE THIS
+        this.removeBlock();
         return (
             <div>
                 <h2 style={this.h1Style}>Project [id]: {this.state.task.title}</h2>

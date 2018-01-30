@@ -6,7 +6,7 @@ function createTaskState(state = {
             introduction: "",
             images: []
         },
-        runs: null,
+        runs: [],
         collaborators: null,
         tutorial: null,
         status: null,
