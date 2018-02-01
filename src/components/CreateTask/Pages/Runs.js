@@ -49,7 +49,7 @@ export default class Runs extends Component {
 
     addRun(){
         this.setState({...this.state, loader: true});
-        axios.post('/tasks/runs', {id_task: this.props.task.id})
+        axios.post('/tasks/runs', {id_task: this.props.task.id, id_runtype: '2'})
         .then( (res) => {
             this.setState({
                 ...this.state,
