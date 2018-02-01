@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-import {Input, Icon, List, Segment, Header} from 'semantic-ui-react'
+import {Input, Icon, List, Header, Image} from 'semantic-ui-react'
 
 export default class Collaborators extends Component {
 
@@ -28,8 +28,12 @@ export default class Collaborators extends Component {
     }
 
     addCollaborator(){
-        console.log(this.state.value);
-        this.props.task.collaborators.users.find(elem => {if(elem.name===this.state.value) this.setState({collaborators: [...this.state.collaborators, elem], value: ""})});
+        // eslint-disable-next-line
+        this.props.task.collaborators.users.find(elem => {
+            if(elem.name===this.state.value) {
+                if (!this.state.collaborators.map(e=>e.id).includes(elem.id)) this.setState({collaborators: [...this.state.collaborators, elem], value: ""});
+            }
+        });
     }
 
     removeCollaborator(collaboratorID){
@@ -77,10 +81,10 @@ export default class Collaborators extends Component {
                     {this.state.collaborators.map((collaborator)=>{
                         return (
                             <List.Item key={collaborator.id}>
-                                <Icon name='user' size='huge'/>
+                                <Image avatar src={collaborator.img} />
                                 <List.Content>
-                                    <List.Header as='h3'>{collaborator.name}</List.Header>
-                                    <List.Description><Icon circular inverted color='red' name='delete' size='small' onClick={()=>this.removeCollaborator(collaborator.id)} /></List.Description>
+                                    <List.Header>{collaborator.name}</List.Header>
+                                    <List.Description><Icon circular inverted color='red' name='delete' size='tiny' onClick={()=>this.removeCollaborator(collaborator.id)} /></List.Description>
                                 </List.Content>
                             </List.Item>
                             )

@@ -12,6 +12,7 @@ export const SET_COLLABORATORS = 'SET_COLLABORATORS'
 export const SET_TUTORIAL = 'SET_TUTORIAL'
 export const SET_STATUS = 'SET_STATUS'
 export const SET_GENERAL_TITLE = 'SET_GENERAL_TITLE'
+export const REMOVE_USER = 'REMOVE_USER'
 
 /*
 * other constants
@@ -48,7 +49,7 @@ export function set_status(data) {
 }
 
 export function fetch_users() {
-    return { type: FETCH_USERS, payload: axios.get(`/users`)};
+    return { type: FETCH_USERS, payload: axios.get(`/users?creator=true`)};
 }
 
 export function upload_task(data) {

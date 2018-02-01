@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 
 import {Segment, Grid} from 'semantic-ui-react'
 
-import { set_general, set_general_title, set_runs, set_collaborators, fetch_users } from '../../store/actions/createTaskActions'
+import { set_general, set_general_title, set_runs, set_collaborators, fetch_users} from '../../store/actions/createTaskActions'
 
 import VerticalMenu from './VerticalMenu'
 import General from './Pages/General'
