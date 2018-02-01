@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
 
-import {Button, Icon, Transition, Segment, Header, Grid, Input, Image, TextArea} from 'semantic-ui-react'
+import {Button, Icon, Transition, Segment, Header, Grid, Input, TextArea, Form, Radio} from 'semantic-ui-react'
 import Dropzone from 'react-dropzone'
+
+import UpImage from './UpImage'
 
 export default class Runs extends Component {
 
@@ -17,11 +19,9 @@ export default class Runs extends Component {
         border: '1px solid cadetblue',
         borderRadius: '5px',
         display: 'flex',
+        flexWrap: 'wrap',
         justifyContent: 'center',
         alignItems: 'center'
-    }
-    imgStyle = {
-        margin: '5px'
     }
 
     constructor(props){
@@ -35,6 +35,8 @@ export default class Runs extends Component {
         this.changeTitle = this.changeTitle.bind(this);
         this.changeDescription = this.changeDescription.bind(this);
         this.changeIntroduction = this.changeIntroduction.bind(this);
+        this.changeType = this.changeType.bind(this);
+        this.removeFile = this.removeFile.bind(this);
         this.onDrop = this.onDrop.bind(this);
     }
 
@@ -49,7 +51,10 @@ export default class Runs extends Component {
                 description: "",
                 introduction: "",
                 images: [],
-                type: "",
+                type: {
+                    question: "",
+                    type: "yesno"
+                },
                 index: this.state.runs.length,
                 hided: false
             }]
@@ -100,12 +105,30 @@ export default class Runs extends Component {
         });
     }
 
+    changeType(index, question, type){
+        let runsCopy = this.state.runs;
+        runsCopy[index].type.question = question;
+        runsCopy[index].type.type = type;
+        this.setState({
+            runs: runsCopy
+        });
+    }
+
     onDrop(index, files){
         let runsCopy = this.state.runs;
         runsCopy[index].images = files;
         this.setState({
             runs: runsCopy
         })
+    }
+
+    removeFile(index, imgindex, e) {
+        e.stopPropagation();
+        let runsCopy = this.state.runs;
+        runsCopy[index].images.splice(imgindex, 1);
+        this.setState({
+            runs: runsCopy
+        });
     }
 
 
@@ -125,9 +148,13 @@ export default class Runs extends Component {
                 </Button>
                 {this.state.runs.map((run, index)=>{
                     if(run.images.length > 0) {
-                        dropzone = run.images.map((image, index) => {
+                        dropzone = run.images.map((image, imgindex) => {
+                            const indexes = {
+                                index: index,
+                                imgindex: imgindex
+                            };
                             return (
-                                <Image key={index} bordered src={image.preview} size='small' inline style={this.imgStyle}/>
+                                <UpImage key={imgindex} indexes={indexes} src={image.preview} delete={this.removeFile} />
                             )
                         });
                     }
@@ -155,6 +182,32 @@ export default class Runs extends Component {
                                         <Grid.Column stretched width={16}>
                                             <Header content='Introduction' size='small' sub/>
                                             <TextArea autoHeight value={run.introduction} onChange={(e)=> this.changeIntroduction(index, e.target.value)} />
+                                        </Grid.Column>
+                                        <Grid.Column stretched width={10}>
+                                            <Header content='Task type' size='small' sub/>
+                                            <Input label='Question' labelPosition='left' type="text" placeholder='Question users should answer' value={run.type.question} onChange={(e)=> {this.changeType(index, e.target.value, run.type.type)}}/>
+                                        </Grid.Column>
+                                        <Grid.Column stretched width={6}>
+                                            <Form>
+                                                <Form.Field>
+                                                    <Radio
+                                                        label='Yes/No'
+                                                        name='radioGroup'
+                                                        value='yesno'
+                                                        checked={run.type.type === 'yesno'}
+                                                        onChange={(e)=> {this.changeType(index, run.type.question, 'yesno')}}
+                                                    />
+                                                </Form.Field>
+                                                <Form.Field>
+                                                    <Radio
+                                                        label='Other'
+                                                        name='radioGroup'
+                                                        value='other'
+                                                        checked={run.type.type === 'other'}
+                                                        onChange={(e)=> {this.changeType(index, run.type.question, 'other')}}
+                                                    />
+                                                </Form.Field>
+                                            </Form>
                                         </Grid.Column>
                                     </Grid>
                                 </Segment>

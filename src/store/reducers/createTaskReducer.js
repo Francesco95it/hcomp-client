@@ -7,7 +7,13 @@ function createTaskState(state = {
             images: []
         },
         runs: [],
-        collaborators: null,
+        collaborators: {
+            list: [],
+            users: [],
+            fetching: false,
+            fetched: false,
+            error: null
+        },
         tutorial: null,
         status: null,
     },
@@ -28,7 +34,7 @@ function createTaskState(state = {
         return {task:{...state.task, runs: action.payload}};
 
         case "SET_COLLABORATORS":
-        return {...state, task:{collaborators: action.payload}};
+        return {task:{...state.task, collaborators: {...state.task.collaborators, list: action.payload}}};
 
         case "SET_TUTORIAL":
         return {...state, task:{tutorial: action.payload}};
@@ -44,6 +50,15 @@ function createTaskState(state = {
 
         case "UPLOAD_TASK_REJECTED":
         return {...state, uploading:false, error: action.payload};
+
+        case "FETCH_USERS_PENDING":
+        return {task:{...state.task, collaborators: {...state.task.collaborators, fetching: true}}};
+
+        case "FETCH_USERS_FULFILLED":
+        return {task:{...state.task, collaborators: {...state.task.collaborators, fetching: false, fetched:true, users: action.payload.data}}};
+
+        case "FETCH_USERS_REJECTED":
+        return {task:{...state.task, collaborators: {...state.task.collaborators, fetching: false, error: action.payload}}};
 
         default:
         return state

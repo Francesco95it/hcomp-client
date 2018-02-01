@@ -21,7 +21,6 @@ export default class General extends Component {
 
     constructor(props){
         super(props);
-        console.log(props);
         this.state = {
             title: props.task.general.title,
             description: props.task.general.description,

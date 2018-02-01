@@ -5,6 +5,7 @@ import axios from 'axios'
 */
 
 export const UPLOAD_TASK = 'UPLOAD_TASK'
+export const FETCH_USERS = 'FETCH_USERS'
 export const SET_GENERAL = 'SET_GENERAL'
 export const SET_RUNS = 'SET_RUNS'
 export const SET_COLLABORATORS = 'SET_COLLABORATORS'
@@ -44,6 +45,10 @@ export function set_tutorial(data) {
 
 export function set_status(data) {
     return { type: SET_STATUS, payload: data};
+}
+
+export function fetch_users() {
+    return { type: FETCH_USERS, payload: axios.get(`/users`)};
 }
 
 export function upload_task(data) {

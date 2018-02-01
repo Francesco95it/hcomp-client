@@ -3,9 +3,7 @@ import {connect} from 'react-redux'
 
 import {Segment, Grid} from 'semantic-ui-react'
 
-import { set_general } from '../../store/actions/createTaskActions'
-import { set_general_title } from '../../store/actions/createTaskActions'
-import { set_runs } from '../../store/actions/createTaskActions'
+import { set_general, set_general_title, set_runs, set_collaborators, fetch_users } from '../../store/actions/createTaskActions'
 
 import VerticalMenu from './VerticalMenu'
 import General from './Pages/General'
@@ -76,7 +74,8 @@ class CreateTask extends Component {
     }
 
     componentDidMount(){
-        this.addBlock();
+        //TODO: CHANGE THIS
+        //this.addBlock();
     }
 
     componentWillUnmount(){
@@ -84,9 +83,6 @@ class CreateTask extends Component {
     }
 
     render() {
-        //CHANGE THIS
-        this.removeBlock();
-        console.log(this.props.task);
         return (
             <div>
                 <h2 style={this.h1Style}>Project [id]: {this.props.task.general.title}</h2>
@@ -120,6 +116,8 @@ function mapDispatchToProps(dispatch){
         setGeneral: (general) => dispatch(set_general(general)),
         setGeneralTitle: (title) => dispatch(set_general_title(title)),
         setRuns: (runs) => dispatch(set_runs(runs)),
+        setCollaborators: (collaborators) => dispatch(set_collaborators(collaborators)),
+        fetchUsers: ()=> dispatch(fetch_users()),
     }
 }
 
