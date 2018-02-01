@@ -4,6 +4,10 @@ import {Input, Icon, List, Header, Image} from 'semantic-ui-react'
 
 export default class Collaborators extends Component {
 
+    listStyle = {
+        display: 'flex',
+        alignItems: 'center'
+    }
 
     inputStyle={
         maxHeight: '30px',
@@ -80,7 +84,7 @@ export default class Collaborators extends Component {
                 <List divided relaxed>
                     {this.state.collaborators.map((collaborator)=>{
                         return (
-                            <List.Item key={collaborator.id}>
+                            <List.Item key={collaborator.id} style={this.listStyle}>
                                 <Image avatar src={collaborator.img} />
                                 <List.Content>
                                     <List.Header>{collaborator.name}</List.Header>

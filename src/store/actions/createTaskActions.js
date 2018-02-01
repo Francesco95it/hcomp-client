@@ -12,7 +12,7 @@ export const SET_COLLABORATORS = 'SET_COLLABORATORS'
 export const SET_TUTORIAL = 'SET_TUTORIAL'
 export const SET_STATUS = 'SET_STATUS'
 export const SET_GENERAL_TITLE = 'SET_GENERAL_TITLE'
-export const REMOVE_USER = 'REMOVE_USER'
+export const CREATE_TASK = 'CREATE_TASK'
 
 /*
 * other constants
@@ -46,6 +46,14 @@ export function set_tutorial(data) {
 
 export function set_status(data) {
     return { type: SET_STATUS, payload: data};
+}
+
+export function create_task(id){
+    return { type: CREATE_TASK, payload: axios.post(`/tasks`, {id_creator: id},{
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })}
 }
 
 export function fetch_users() {

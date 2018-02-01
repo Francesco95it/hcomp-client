@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 
 import {Segment, Grid} from 'semantic-ui-react'
 
-import { set_general, set_general_title, set_runs, set_collaborators, fetch_users} from '../../store/actions/createTaskActions'
+import { set_general, set_general_title, set_runs, set_collaborators, fetch_users, set_tutorial, create_task} from '../../store/actions/createTaskActions'
 
 import VerticalMenu from './VerticalMenu'
 import General from './Pages/General'
@@ -35,6 +35,10 @@ class CreateTask extends Component {
         this.removeBlock = this.removeBlock.bind(this);
         this.addBlock = this.addBlock.bind(this);
         this.unLoad = this.unLoad.bind(this);
+    }
+
+    componentWillMount(){
+        this.props.createTask(this.props.session.user.id);
     }
 
     handleItemClick = (e, { name }) => this.setState({ ...this.state, activeItem: name })
@@ -83,9 +87,10 @@ class CreateTask extends Component {
     }
 
     render() {
+        if(!this.props.task.created) return <Segment loading style={{minHeight: '200px'}} />
         return (
             <div>
-                <h2 style={this.h1Style}>Project [id]: {this.props.task.general.title}</h2>
+                <h2 style={this.h1Style}>Project [{this.props.task.id}]: {this.props.task.general.title}</h2>
                 <Grid style={{marginTop:'0px'}}>
 
                     <Grid.Column stretched width={12}>
@@ -117,7 +122,9 @@ function mapDispatchToProps(dispatch){
         setGeneralTitle: (title) => dispatch(set_general_title(title)),
         setRuns: (runs) => dispatch(set_runs(runs)),
         setCollaborators: (collaborators) => dispatch(set_collaborators(collaborators)),
+        setTutorial: (tutorial) => dispatch(set_tutorial(tutorial)),
         fetchUsers: ()=> dispatch(fetch_users()),
+        createTask: (id)=> dispatch(create_task(id)),
     }
 }
 

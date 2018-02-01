@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
 
-import {Button, Icon, Transition, Segment, Header, Grid, Input, TextArea, Form, Radio} from 'semantic-ui-react'
+import {Button, Icon, Transition, Segment, Header, Grid, Input, TextArea, Form, Radio, Loader} from 'semantic-ui-react'
 import Dropzone from 'react-dropzone'
+
+import axios from 'axios'
 
 import UpImage from './UpImage'
 
@@ -27,7 +29,8 @@ export default class Runs extends Component {
     constructor(props){
         super(props);
         this.state = {
-            runs: (this.props.task.runs)
+            runs: (this.props.task.runs),
+            loader: false,
         }
         this.addRun = this.addRun.bind(this);
         this.toggleRun = this.toggleRun.bind(this);
@@ -45,27 +48,35 @@ export default class Runs extends Component {
     }
 
     addRun(){
-        this.setState({
-            runs: [...this.state.runs, {
-                title: `Untitled run`,
-                description: "",
-                introduction: "",
-                images: [],
-                type: {
-                    question: "",
-                    type: "yesno"
-                },
-                index: this.state.runs.length,
-                hided: false
-            }]
+        this.setState({...this.state, loader: true});
+        axios.post('/tasks/runs', {id_task: this.props.task.id})
+        .then( (res) => {
+            this.setState({
+                ...this.state,
+                loader: false,
+                runs: [...this.state.runs, {
+                    id: res.data,
+                    title: `Untitled run`,
+                    description: "",
+                    introduction: "",
+                    images: [],
+                    type: {
+                        question: "",
+                        type: "yesno"
+                    },
+                    index: this.state.runs.length,
+                    hided: false
+                }]
+            })
         })
+        .catch(e => console.log("Error: ",e));
     }
 
     toggleRun(index, e){
         e.stopPropagation();
         let runsCopy = this.state.runs;
         runsCopy[index].hided = !runsCopy[index].hided;
-        this.setState({runs: runsCopy});
+        this.setState({...this.state, runs: runsCopy});
     }
 
     removeRun(index, e){
@@ -77,6 +88,7 @@ export default class Runs extends Component {
         }
         runsCopy.splice(-1,1);
         this.setState({
+            ...this.state,
             runs: runsCopy
         })
     }
@@ -85,6 +97,7 @@ export default class Runs extends Component {
         let runsCopy = this.state.runs;
         runsCopy[index].title = title;
         this.setState({
+            ...this.state,
             runs: runsCopy
         });
     }
@@ -93,6 +106,7 @@ export default class Runs extends Component {
         let runsCopy = this.state.runs;
         runsCopy[index].description = desc;
         this.setState({
+            ...this.state,
             runs: runsCopy
         });
     }
@@ -101,6 +115,7 @@ export default class Runs extends Component {
         let runsCopy = this.state.runs;
         runsCopy[index].introduction = intro;
         this.setState({
+            ...this.state,
             runs: runsCopy
         });
     }
@@ -110,6 +125,7 @@ export default class Runs extends Component {
         runsCopy[index].type.question = question;
         runsCopy[index].type.type = type;
         this.setState({
+            ...this.state,
             runs: runsCopy
         });
     }
@@ -118,6 +134,7 @@ export default class Runs extends Component {
         let runsCopy = this.state.runs;
         runsCopy[index].images = files;
         this.setState({
+            ...this.state,
             runs: runsCopy
         })
     }
@@ -127,12 +144,14 @@ export default class Runs extends Component {
         let runsCopy = this.state.runs;
         runsCopy[index].images.splice(imgindex, 1);
         this.setState({
+            ...this.state,
             runs: runsCopy
         });
     }
 
 
     render(){
+        if(this.state.loader) return <Loader active inline='centered' />
         let dropzone = (
             <div style={{textAlign: 'center'}}>
                 <Icon name='add circle' size='big' />
