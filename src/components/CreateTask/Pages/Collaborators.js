@@ -14,7 +14,7 @@ export default class Collaborators extends Component {
         super(props);
         this.state = {
             collaborators: this.props.task.collaborators.list,
-            value: ""
+            value: "",
         };
         this.addCollaborator = this.addCollaborator.bind(this);
     }
@@ -28,14 +28,14 @@ export default class Collaborators extends Component {
     }
 
     addCollaborator(){
-        //TODO: change to add ID only
-        this.setState({collaborators: [...this.state.collaborators, this.state.value], value: ""});
+        console.log(this.state.value);
+        this.props.task.collaborators.users.find(elem => {if(elem.name===this.state.value) this.setState({collaborators: [...this.state.collaborators, elem], value: ""})});
     }
 
-    removeCollaborator(collaborator){
+    removeCollaborator(collaboratorID){
         const collabCopy = this.state.collaborators;
         for (var i = 0; i < collabCopy.length; i++) {
-            if (collabCopy[i]===collaborator) {
+            if (collabCopy[i].id===collaboratorID) {
                 collabCopy.splice(i,1);
                 break;
             }
@@ -46,9 +46,6 @@ export default class Collaborators extends Component {
         })
     }
 
-    searchUser(name){
-        this.setState({...this.state, value: name});
-    }
 
 
 
@@ -68,22 +65,22 @@ export default class Collaborators extends Component {
                     type="text"
                     placeholder='Collaborator'
                     value={this.state.value}
-                    onChange={(e)=> {this.searchUser(e.target.value)}}
+                    onChange={(e)=>this.setState({...this.state, value: e.target.value})}
                     onKeyPress={(e)=>{if(e.key==='Enter') this.addCollaborator()}}
                 />
                 <datalist id='users'>
                     {this.props.task.collaborators.users.map((user) => {
-                        return <option key={user.id} value={user.name} />
+                        return <option key={user.id} value={user.name}/>
                     })}
                 </datalist>
                 <List divided relaxed>
                     {this.state.collaborators.map((collaborator)=>{
                         return (
-                            <List.Item key={collaborator}>
+                            <List.Item key={collaborator.id}>
                                 <Icon name='user' size='huge'/>
                                 <List.Content>
-                                    <List.Header as='h3'>{collaborator}</List.Header>
-                                    <List.Description><Icon circular inverted color='red' name='delete' size='small' onClick={()=>this.removeCollaborator(collaborator)} /></List.Description>
+                                    <List.Header as='h3'>{collaborator.name}</List.Header>
+                                    <List.Description><Icon circular inverted color='red' name='delete' size='small' onClick={()=>this.removeCollaborator(collaborator.id)} /></List.Description>
                                 </List.Content>
                             </List.Item>
                             )
