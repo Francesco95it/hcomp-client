@@ -88,9 +88,10 @@ class CreateTask extends Component {
 
     render() {
         if(!this.props.task.created) return <Segment loading style={{minHeight: '200px'}} />
+        if(this.props.task.error) return <Segment style={{minHeight: '200px'}} content='Something went wrong. Please try again later.'/>
         return (
             <div>
-                <h2 style={this.h1Style}>Project [{this.props.task.id}]: {this.props.task.general.title}</h2>
+                <h2 style={this.h1Style}>Project #{this.props.task.id}: {this.props.task.general.title}</h2>
                 <Grid style={{marginTop:'0px'}}>
 
                     <Grid.Column stretched width={12}>

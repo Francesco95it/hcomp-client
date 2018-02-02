@@ -52,7 +52,7 @@ function createTaskState(state = {
         return {...state, task:{...state.task, created: true, id: action.payload.data}};
 
         case "CREATE_TASK_REJECTED":
-        return {...state, task:{...state.task, created: false, error: action.payload.data}};
+        return {...state, task:{...state.task, created: false, error: action.payload}};
 
         case "UPLOAD_TASK_PENDING":
         return {...state, uploading:true, uploaded: false};

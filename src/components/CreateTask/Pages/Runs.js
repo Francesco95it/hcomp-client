@@ -1,11 +1,13 @@
 import React, {Component} from 'react'
 
-import {Button, Icon, Transition, Segment, Header, Grid, Input, TextArea, Form, Radio, Loader} from 'semantic-ui-react'
+import {Button, Icon, Transition, Segment, Header, Grid, Input, TextArea, Form, Radio, Loader, Dimmer} from 'semantic-ui-react'
 import Dropzone from 'react-dropzone'
 
 import axios from 'axios'
 
 import UpImage from './UpImage'
+
+const sha256 = require('js-sha256')
 
 export default class Runs extends Component {
 
@@ -60,6 +62,8 @@ export default class Runs extends Component {
                     description: "",
                     introduction: "",
                     images: [],
+                    imagesUploading: false,
+                    imagesUpError: false,
                     type: {
                         question: "",
                         type: "yesno"
@@ -133,10 +137,51 @@ export default class Runs extends Component {
     onDrop(index, files){
         let runsCopy = this.state.runs;
         runsCopy[index].images = files;
+        runsCopy[index].imagesUploading = true;
+        runsCopy[index].imagesUpError = false;
         this.setState({
             ...this.state,
             runs: runsCopy
-        })
+        });
+        for (let i=0; i<this.state.runs[index].images.length; i++) {
+            console.log(this.state.runs[index].images[i]);
+            const promise = new Promise((resolve, reject) => {
+                const reader = new FileReader();
+
+                reader.readAsDataURL(this.state.runs[index].images[i]);
+
+                reader.onload = () => {
+                    if (!!reader.result) {
+                        resolve(reader.result);
+                    }
+                    else {
+                        reject(Error("Failed converting to base64"));
+                    }
+                }
+
+            })
+            promise.then(result => {
+                axios.put('/tasks/runs/'+this.state.runs[index].id, {number: i, imgname: sha256(result), base64: result})
+                .then(res => {
+                    let runsCopy = this.state.runs;
+                    runsCopy[index].imagesUploading = false;
+                    this.setState({...this.state, runs: runsCopy});
+                })
+                .catch(err => {
+                    let runsCopy = this.state.runs;
+                    runsCopy[index].imagesUploading = false;
+                    runsCopy[index].imagesUpError = true;
+                    this.setState({...this.state, runs: runsCopy});
+                    console.log(err);
+                });
+            }, err => {
+                    let runsCopy = this.state.runs;
+                    runsCopy[index].imagesUploading = false;
+                    runsCopy[index].imagesUpError = true;
+                    this.setState({...this.state, runs: runsCopy});
+                    console.log(err);
+            })
+        }
     }
 
     removeFile(index, imgindex, e) {
@@ -173,7 +218,13 @@ export default class Runs extends Component {
                                 imgindex: imgindex
                             };
                             return (
-                                <UpImage key={imgindex} indexes={indexes} src={image.preview} delete={this.removeFile} />
+                                <Segment basic key={imgindex}>
+                                {run.imagesUploading?
+                                    <Dimmer active>
+                                        <Loader indeterminate>Uploading</Loader>
+                                    </Dimmer>:null}
+                                    <UpImage indexes={indexes} src={image.preview} delete={this.removeFile} />
+                                </Segment>
                             )
                         });
                     }

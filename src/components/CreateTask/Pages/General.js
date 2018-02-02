@@ -4,7 +4,7 @@ import {Form, Input, TextArea, Grid, Header, Image, Icon, Dimmer, Loader, Segmen
 import Dropzone from 'react-dropzone'
 
 import axios from 'axios'
-import sha256 from 'crypto-js/sha256'
+const sha256 = require('js-sha256')
 
 export default class General extends Component {
 
@@ -46,6 +46,7 @@ export default class General extends Component {
             avatarUpError: false
         });
         const promise = new Promise((resolve, reject) => {
+            console.log(file[0]);
             const reader = new FileReader();
 
             reader.readAsDataURL(file[0]);
@@ -64,7 +65,6 @@ export default class General extends Component {
             axios.put('/tasks/'+this.props.task.id, {imgname: sha256(result), base64: result})
             .then(res => {
                 this.setState({...this.state, avatarUploading: false});
-                console.log(res)
             })
             .catch(err => {
                 this.setState({...this.state, avatarUploading: false, avatarUpError: true});
