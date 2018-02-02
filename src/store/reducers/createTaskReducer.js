@@ -7,7 +7,7 @@ function createTaskState(state = {
             title: "No name task",
             description: "",
             introduction: "",
-            images: []
+            avatar: []
         },
         runs: [],
         collaborators: {

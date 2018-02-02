@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
 
-import {Form, Input, TextArea, Grid, Header, Image, Icon} from 'semantic-ui-react'
+import {Form, Input, TextArea, Grid, Header, Image, Icon, Dimmer, Loader} from 'semantic-ui-react'
 import Dropzone from 'react-dropzone'
+
+import axios from 'axios'
 
 export default class General extends Component {
 
@@ -25,7 +27,8 @@ export default class General extends Component {
             title: props.task.general.title,
             description: props.task.general.description,
             introduction: props.task.general.introduction,
-            images: props.task.general.images
+            avatar: props.task.general.avatar,
+            avatarUploading: false
         }
     }
 
@@ -33,11 +36,42 @@ export default class General extends Component {
         this.props.setGeneral(this.state);
     }
 
-    onDrop(files) {
+    onDrop(file) {
         this.setState({
             ...this.state,
-            images: files
+            avatar: file,
+            avatarUploading:true
         });
+        const promise = new Promise((resolve, reject) => {
+            const reader = new FileReader();
+
+            reader.readAsDataURL(file[0]);
+
+            reader.onload = () => {
+                if (!!reader.result) {
+                  resolve(reader.result);
+                }
+                else {
+                  reject(Error("Failed converting to base64"));
+                }
+            }
+
+        })
+        promise.then(result => {
+            axios.put('/tasks/'+this.props.task.id, {image: result})
+            .then(res => {
+                this.setState({...this.state, avatarUploading: false});
+                console.log(res)
+            })
+            .catch(err => {
+                this.setState({...this.state, avatarUploading: false});
+                console.log(err);
+            });
+        }, err => {
+            this.setState({...this.state, avatarUploading: false});
+            console.log(err)
+        })
+
     }
 
     render(){
@@ -47,16 +81,17 @@ export default class General extends Component {
                 <p>Drop an image or click here to browse</p>
             </div>
         );
-        try {
-            if(this.state.images.length > 0) {
-                dropzone = this.state.images.map((image, index) => {
-                    return (
-                        <Image key={index} src={image.preview} size='small' inline/>
-                    )
-                });
-            }
-        } catch (e) {
-            console.error(e);
+        if(this.state.avatar.length > 0) {
+            dropzone = this.state.avatar.map((image, index) => {
+                return (
+                    <div key={index}>
+                    {this.state.avatarUploading?
+                        <Dimmer active>
+                            <Loader indeterminate>Uploading</Loader>
+                        </Dimmer>:null}
+                    <Image src={image.preview} size='small' inline/></div>
+                )
+            });
         }
 
         return (
