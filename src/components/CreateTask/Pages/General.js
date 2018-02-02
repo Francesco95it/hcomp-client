@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
 
-import {Form, Input, TextArea, Grid, Header, Image, Icon, Dimmer, Loader} from 'semantic-ui-react'
+import {Form, Input, TextArea, Grid, Header, Image, Icon, Dimmer, Loader, Segment} from 'semantic-ui-react'
 import Dropzone from 'react-dropzone'
 
 import axios from 'axios'
+import sha256 from 'crypto-js/sha256'
 
 export default class General extends Component {
 
@@ -28,7 +29,8 @@ export default class General extends Component {
             description: props.task.general.description,
             introduction: props.task.general.introduction,
             avatar: props.task.general.avatar,
-            avatarUploading: false
+            avatarUploading: false,
+            avatarUpError: false
         }
     }
 
@@ -40,7 +42,8 @@ export default class General extends Component {
         this.setState({
             ...this.state,
             avatar: file,
-            avatarUploading:true
+            avatarUploading:true,
+            avatarUpError: false
         });
         const promise = new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -58,17 +61,17 @@ export default class General extends Component {
 
         })
         promise.then(result => {
-            axios.put('/tasks/'+this.props.task.id, {image: result})
+            axios.put('/tasks/'+this.props.task.id, {imgname: sha256(result), base64: result})
             .then(res => {
                 this.setState({...this.state, avatarUploading: false});
                 console.log(res)
             })
             .catch(err => {
-                this.setState({...this.state, avatarUploading: false});
+                this.setState({...this.state, avatarUploading: false, avatarUpError: true});
                 console.log(err);
             });
         }, err => {
-            this.setState({...this.state, avatarUploading: false});
+            this.setState({...this.state, avatarUploading: false, avatarUpError: true});
             console.log(err)
         })
 
@@ -84,12 +87,12 @@ export default class General extends Component {
         if(this.state.avatar.length > 0) {
             dropzone = this.state.avatar.map((image, index) => {
                 return (
-                    <div key={index}>
+                    <Segment key={index} basic>
                     {this.state.avatarUploading?
                         <Dimmer active>
                             <Loader indeterminate>Uploading</Loader>
                         </Dimmer>:null}
-                    <Image src={image.preview} size='small' inline/></div>
+                    <Image src={image.preview} size='small' inline/></Segment>
                 )
             });
         }
@@ -114,6 +117,7 @@ export default class General extends Component {
                             <Dropzone multiple={false} style={this.dzStyle} onDrop={this.onDrop.bind(this)}>
                                 {dropzone}
                             </Dropzone>
+                            {this.state.avatarUpError?<Header as='h4' color='red' content='Something went wrong. Please try again.'/>:null}
                         </div>
 
                         <p>The avatar represents your project with an image</p>
