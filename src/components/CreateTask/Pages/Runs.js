@@ -161,7 +161,7 @@ export default class Runs extends Component {
 
             })
             promise.then(result => {
-                axios.put('/tasks/runs/'+this.state.runs[index].id, {number: i, imgname: sha256(result), base64: result})
+                axios.put('/tasks/runs/'+this.state.runs[index].id, {imgname: sha256(result), base64: result})
                 .then(res => {
                     let runsCopy = this.state.runs;
                     runsCopy[index].imagesUploading = false;
