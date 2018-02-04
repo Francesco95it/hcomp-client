@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 
 import {Segment, Grid} from 'semantic-ui-react'
 
-import { set_general, set_general_title, set_runs, set_collaborators, fetch_users, set_tutorial, create_task} from '../../store/actions/createTaskActions'
+import { set_general, set_general_title, set_runs, set_collaborators, fetch_users, set_tutorial, set_status, create_task} from '../../store/actions/createTaskActions'
 
 import VerticalMenu from './VerticalMenu'
 import General from './Pages/General'
@@ -87,7 +87,6 @@ class CreateTask extends Component {
     }
 
     render() {
-        console.log(this.props.task);
         if(!this.props.task.created) return <Segment loading style={{minHeight: '200px'}} />
         if(this.props.task.error) return <Segment style={{minHeight: '200px'}} content='Something went wrong. Please try again later.'/>
         return (
@@ -124,6 +123,7 @@ function mapDispatchToProps(dispatch){
         setGeneralTitle: (title) => dispatch(set_general_title(title)),
         setRuns: (runs) => dispatch(set_runs(runs)),
         setCollaborators: (collaborators) => dispatch(set_collaborators(collaborators)),
+        setStatus: (status) => dispatch(set_status(status)),
         setTutorial: (tutorial) => dispatch(set_tutorial(tutorial)),
         fetchUsers: ()=> dispatch(fetch_users()),
         createTask: (id)=> dispatch(create_task(id)),

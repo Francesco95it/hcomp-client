@@ -18,7 +18,7 @@ function createTaskState(state = {
             error: null
         },
         tutorial: [],
-        status: null,
+        status: 'private',
     },
     uploading: false,
     uploaded: false,
@@ -43,7 +43,7 @@ function createTaskState(state = {
         return {...state, task:{...state.task, tutorial: action.payload}};
 
         case "SET_STATUS":
-        return {...state, task:{status: action.payload}};
+        return {...state, task:{...state.task, status: action.payload}};
 
         case "CREATE_TASK_PENDING":
         return {...state, task:{...state.task, created: false, error: null}};

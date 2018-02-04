@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-import {Icon, Button} from 'semantic-ui-react'
+import {Icon, Button, TextArea} from 'semantic-ui-react'
 
 export default class Tutorial extends Component {
 
@@ -9,6 +9,8 @@ export default class Tutorial extends Component {
         this.state = {
             steps: this.props.task.tutorial
         };
+        this.addStep = this.addStep.bind(this);
+        this.removeStep = this.removeStep.bind(this);
     }
 
     componentWillUnmount(){
@@ -16,6 +18,7 @@ export default class Tutorial extends Component {
     }
 
     addStep(){
+        console.log('Eu');
         this.setState({
             steps: [...this.state.steps, {
                 index: this.state.steps.length,
@@ -36,7 +39,14 @@ export default class Tutorial extends Component {
         })
     }
 
-
+    changeText(index, text){
+        const stepsCopy = this.state.steps;
+        stepsCopy[index].text = text;
+        this.setState({
+            ...this.state,
+            steps: stepsCopy
+        })
+    }
 
 
     render(){
@@ -46,9 +56,19 @@ export default class Tutorial extends Component {
                 <p>Add a tutorial, step by step, for helping out users do your task.</p>
 
                 <Button icon labelPosition='right' color='green' onClick={this.addStep}>
-                    Add a run
+                    Add a step
                     <Icon name='add circle' />
-                </Button>>
+                </Button>
+                {
+                    this.state.steps.map((step, index) => {
+                        return (
+                            <div key={index}>
+                                <p style={{marginTop:'10px', marginBottom: '2px'}}>Step {step.index + 1}</p>
+                                <TextArea autoHeight value={step.text} style={{width: '-webkit-fill-available'}} onChange={(e)=> this.changeText(index, e.target.value)} />
+                            </div>
+                        )
+                    })
+                }
             </div>
         )
     }
