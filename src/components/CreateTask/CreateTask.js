@@ -87,6 +87,7 @@ class CreateTask extends Component {
     }
 
     render() {
+        console.log(this.props.task);
         if(!this.props.task.created) return <Segment loading style={{minHeight: '200px'}} />
         if(this.props.task.error) return <Segment style={{minHeight: '200px'}} content='Something went wrong. Please try again later.'/>
         return (

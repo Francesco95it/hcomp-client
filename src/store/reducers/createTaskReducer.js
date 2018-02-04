@@ -46,7 +46,7 @@ function createTaskState(state = {
         return {...state, task:{status: action.payload}};
 
         case "CREATE_TASK_PENDING":
-        return {...state, task:{...state.task, created: false}};
+        return {...state, task:{...state.task, created: false, error: null}};
 
         case "CREATE_TASK_FULFILLED":
         return {...state, task:{...state.task, created: true, id: action.payload.data}};

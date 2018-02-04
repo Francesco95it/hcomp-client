@@ -163,6 +163,7 @@ export default class Runs extends Component {
             promise.then(result => {
                 axios.put('/tasks/runs/'+this.state.runs[index].id, {imgname: sha256(result), base64: result})
                 .then(res => {
+                    console.log('Image at imgindex ', i, ' uploaded with name ', sha256(result));
                     let runsCopy = this.state.runs;
                     runsCopy[index].imagesUploading = false;
                     this.setState({...this.state, runs: runsCopy});
@@ -187,11 +188,34 @@ export default class Runs extends Component {
     removeFile(index, imgindex, e) {
         e.stopPropagation();
         let runsCopy = this.state.runs;
-        runsCopy[index].images.splice(imgindex, 1);
-        this.setState({
-            ...this.state,
-            runs: runsCopy
-        });
+
+        const promise = new Promise((resolve, reject) => {
+            const reader = new FileReader();
+
+            reader.readAsDataURL(this.state.runs[index].images[imgindex]);
+
+            reader.onload = () => {
+                if (!!reader.result) {
+                    resolve(reader.result);
+                }
+                else {
+                    reject(Error("Failed converting to base64"));
+                }
+            }
+
+        })
+        promise.then(result => {
+            axios.delete('/tasks/runs/'+this.state.runs[index].id, {imgName: sha256(result)})
+            .then(res=>{
+                console.log("Image deleted");
+                runsCopy[index].images.splice(imgindex, 1);
+                this.setState({
+                    ...this.state,
+                    runs: runsCopy
+                });
+            })
+            .catch(err => console.log("Error deleting image: ",err));
+        })
     }
 
 
