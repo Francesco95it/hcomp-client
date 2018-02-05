@@ -52,6 +52,7 @@ export default class Runs extends Component {
 
     addRun(){
         this.setState({...this.state, loader: true});
+        console.log("Index will be: ",this.state.runs.length);
         axios.post('/tasks/runs', {id_task: this.props.task.id, id_runtype: '2'})
         .then( (res) => {
             this.setState({
@@ -63,8 +64,7 @@ export default class Runs extends Component {
                     description: "",
                     introduction: "",
                     images: [],
-                    imagesUploading: false,
-                    imagesUpError: false,
+                    uploadingError: false,
                     type: {
                         question: "",
                         type: "yesno"
@@ -139,7 +139,7 @@ export default class Runs extends Component {
         const promise = new Promise((resolve, reject) => {
             const reader = new FileReader();
 
-            reader.readAsDataURL(this.state.runs[index].images[i]);
+            reader.readAsDataURL(this.state.runs[index].images[i].image);
 
             reader.onload = () => {
                 if (!!reader.result) {
@@ -154,25 +154,21 @@ export default class Runs extends Component {
             axios.put('/tasks/runs/'+this.state.runs[index].id, {imgname: sha256(result+new Date().getTime()), base64: result})
             .then(res => {
                 console.log('Image at imgindex ', i, ' uploaded with name ', sha256(result+new Date().getTime()));
-                if(i !== 0) {
-                    this.uploadImage(index, i-1);
-                } else {
-                    let runsCopy = this.state.runs;
-                    runsCopy[index].imagesUploading = false;
-                    this.setState({...this.state, runs: runsCopy});
-                }
+                let runsCopy = this.state.runs;
+                runsCopy[index].images[i].uploading = false;
+                this.setState({...this.state, runs: runsCopy});
+                if(i>0) this.uploadImage(index, i-1);
             })
             .catch(err => {
                 let runsCopy = this.state.runs;
-                runsCopy[index].imagesUploading = false;
-                runsCopy[index].imagesUpError = true;
+                runsCopy[index].images[i].uploading = false;
+                runsCopy[index].uploadingError = true;
                 this.setState({...this.state, runs: runsCopy});
                 console.log(err);
             });
         }, err => {
             let runsCopy = this.state.runs;
-            runsCopy[index].imagesUploading = false;
-            runsCopy[index].imagesUpError = true;
+            runsCopy[index].images.map(img => { return {image: img.image, uploading: false}})
             this.setState({...this.state, runs: runsCopy});
             console.log(err);
         })
@@ -180,9 +176,8 @@ export default class Runs extends Component {
 
     onDrop(index, files){
         let runsCopy = this.state.runs;
-        runsCopy[index].images = files;
-        runsCopy[index].imagesUploading = true;
-        runsCopy[index].imagesUpError = false;
+        runsCopy[index].images = files.map(file => { return {image: file, uploading: true}});
+        runsCopy[index].uploadingError = false;
         this.setState({
             ...this.state,
             runs: runsCopy
@@ -193,11 +188,15 @@ export default class Runs extends Component {
     removeFile(index, imgindex, e) {
         e.stopPropagation();
         let runsCopy = this.state.runs;
-
+        runsCopy[index].images[imgindex].uploading = true;
+        this.setState({
+            ...this.state,
+            runs: runsCopy
+        })
         const promise = new Promise((resolve, reject) => {
             const reader = new FileReader();
 
-            reader.readAsDataURL(this.state.runs[index].images[imgindex]);
+            reader.readAsDataURL(this.state.runs[index].images[imgindex].image);
 
             reader.onload = () => {
                 if (!!reader.result) {
@@ -255,53 +254,61 @@ export default class Runs extends Component {
                     Add a run
                     <Icon name='add circle' />
                 </Button>
-                {this.state.runs.map((run, index)=>{
-                    if(run.images.length > 0) {
-                        dropzone = run.images.map((image, imgindex) => {
+                {this.state.runs.map((run)=>{
+                    if(this.state.runs[run.index].images.length > 0) {
+                        dropzone = this.state.runs[run.index].images.map((image, imgindex) => {
                             const indexes = {
-                                index: index,
+                                index: run.index,
                                 imgindex: imgindex
                             };
                             return (
                                 <Segment basic key={imgindex}>
-                                {run.imagesUploading?
+                                {image.uploading?
                                     <Dimmer active>
                                         <Loader indeterminate>Uploading</Loader>
                                     </Dimmer>:null}
-                                    <UpImage indexes={indexes} src={image.preview} delete={this.removeFile} />
+                                    <UpImage indexes={indexes} src={image.image.preview} delete={this.removeFile} />
                                 </Segment>
                             )
                         });
+                    } else {
+                        dropzone = (
+                            <div style={{textAlign: 'center'}}>
+                                <Icon name='add circle' size='big' />
+                                <p>Drop images or click here to browse</p>
+                            </div>
+                        );
                     }
                     return (
-                        <Segment.Group key={index}  piled>
-                            <Segment onClick={(e)=>this.toggleRun(index, e)}>
+                        <Segment.Group key={run.index}  piled>
+                            <Segment onClick={(e)=>this.toggleRun(run.index, e)}>
                                 <Header size="small" content={run.title} style={{display: 'inline'}} />
-                                <Button circular color='red' icon='delete' compact size='mini' floated='right' onClick={(e)=>this.removeRun(index, e)}/>
-                                <Button circular color='teal' icon={run.hided ? 'chevron down' : 'chevron up'} compact size='mini' floated='right' onClick={(e)=>this.toggleRun(index, e)}/>
+                                <Button circular color='red' icon='delete' compact size='mini' floated='right' onClick={(e)=>this.removeRun(run.index, e)}/>
+                                <Button circular color='teal' icon={run.hided ? 'chevron down' : 'chevron up'} compact size='mini' floated='right' onClick={(e)=>this.toggleRun(run.index, e)}/>
                             </Segment>
                             <Transition visible={!run.hided}  animation='fade down' duration={500}>
                                 <Segment>
                                     <Grid>
                                         <Grid.Column stretched width={8}>
-                                            <Input label='Title' labelPosition='left' type="text" placeholder='Run title' value={run.title} onChange={(e)=> {this.changeTitle(index, e.target.value)}}/>
+                                            <Input label='Title' labelPosition='left' type="text" placeholder='Run title' value={run.title} onChange={(e)=> {this.changeTitle(run.index, e.target.value)}}/>
                                         </Grid.Column>
                                         <Grid.Column stretched width={16}>
-                                            <Dropzone accept='image/*' style={this.dzStyle} onDrop={(files) => this.onDrop(index, files)}>
+                                            {run.uploadingError? <Header color='red'>Something went wrong uploading one or more images. Please try again</Header>: null}
+                                            <Dropzone accept='image/*' style={this.dzStyle} onDrop={(files) => this.onDrop(run.index, files)}>
                                                 {dropzone}
                                             </Dropzone>
-                                            {run.images.length>0? <Button color='red' onClick={()=>this.removeAllFiles(index)}>Delete all images</Button> : null}
+                                            {run.images.length>0? <Button color='red' onClick={()=>this.removeAllFiles(run.index)}>Delete all images</Button> : null}
                                         </Grid.Column>
                                         <Grid.Column stretched width={16}>
-                                            <Input label='Description' labelPosition='left' type="text" placeholder='Description' value={run.description} onChange={(e)=> {this.changeDescription(index, e.target.value)}}/>
+                                            <Input label='Description' labelPosition='left' type="text" placeholder='Description' value={run.description} onChange={(e)=> {this.changeDescription(run.index, e.target.value)}}/>
                                         </Grid.Column>
                                         <Grid.Column stretched width={16}>
                                             <Header content='Introduction' size='small' sub/>
-                                            <TextArea autoHeight value={run.introduction} onChange={(e)=> this.changeIntroduction(index, e.target.value)} />
+                                            <TextArea autoHeight value={run.introduction} onChange={(e)=> this.changeIntroduction(run.index, e.target.value)} />
                                         </Grid.Column>
                                         <Grid.Column stretched width={10}>
                                             <Header content='Task type' size='small' sub/>
-                                            <Input label='Question' labelPosition='left' type="text" placeholder='Question users should answer' value={run.type.question} onChange={(e)=> {this.changeType(index, e.target.value, run.type.type)}}/>
+                                            <Input label='Question' labelPosition='left' type="text" placeholder='Question users should answer' value={run.type.question} onChange={(e)=> {this.changeType(run.index, e.target.value, run.type.type)}}/>
                                         </Grid.Column>
                                         <Grid.Column stretched width={6}>
                                             <Form>
@@ -311,7 +318,7 @@ export default class Runs extends Component {
                                                         name='radioGroup'
                                                         value='yesno'
                                                         checked={run.type.type === 'yesno'}
-                                                        onChange={(e)=> {this.changeType(index, run.type.question, 'yesno')}}
+                                                        onChange={(e)=> {this.changeType(run.index, run.type.question, 'yesno')}}
                                                     />
                                                 </Form.Field>
                                                 <Form.Field>
@@ -320,7 +327,7 @@ export default class Runs extends Component {
                                                         name='radioGroup'
                                                         value='other'
                                                         checked={run.type.type === 'other'}
-                                                        onChange={(e)=> {this.changeType(index, run.type.question, 'other')}}
+                                                        onChange={(e)=> {this.changeType(run.index, run.type.question, 'other')}}
                                                     />
                                                 </Form.Field>
                                             </Form>

@@ -28,10 +28,8 @@ export const login = (data) => {
     return () => {
         axios.post('/auth/login', data)
         .then((res) => {
-            console.log("RES.DATA: ", res.data);
             if (!res.data.error){
                 const userData = dataHandler(data, res.data)
-                //console.log("dataHandler: ", userData)
                 return sessionService.saveSession( userData.id )
                 .then(() => {
                     sessionService.saveUser(userData)
@@ -45,7 +43,7 @@ export const login = (data) => {
             }
         }).catch(err => {
             console.error(err);
-            return err;
+            sessionService.saveUser({error: err});
         })
     };
 };

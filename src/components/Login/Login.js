@@ -86,7 +86,7 @@ class Login extends Component {
         if(this.props.session.authenticated) return <Redirect to='/' />
         return (
             <Segment textAlign='center' style={this.segmentStyle}>
-                <ModalLogin loginSuccess={this.state.loginSuccess} />
+                <ModalLogin loginSuccess={this.state.loginSuccess} error={this.props.session.user.error}/>
                 <h1 className="h1Style">Login with your social account</h1>
                 {loginErr}
                 <FacebookLogin
