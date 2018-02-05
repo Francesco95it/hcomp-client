@@ -34,16 +34,19 @@ export const login = (data) => {
                 //console.log("dataHandler: ", userData)
                 return sessionService.saveSession( userData.id )
                 .then(() => {
-                    //TODO: Create user structure to be same btw google-fb
                     sessionService.saveUser(userData)
                     .then(() => {
+                        axios.defaults.headers.common['Authorization'] = res.data.jwt;
                         console.log("Logged in");
                     }).catch(err => console.error(err));
                 }).catch(err => console.error(err));
             } else {
                 window.confirm("Error logging in. Please try again.");
             }
-        }).catch(err => console.error(err))
+        }).catch(err => {
+            console.error(err);
+            return err;
+        })
     };
 };
 
