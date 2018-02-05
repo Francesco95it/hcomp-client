@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 
 import {Segment, Grid} from 'semantic-ui-react'
+import axios from 'axios'
 
 import { set_general, set_general_title, set_runs, set_collaborators, fetch_users, set_tutorial, set_status, create_task} from '../../store/actions/createTaskActions'
 
@@ -83,7 +84,10 @@ class CreateTask extends Component {
     }
 
     componentWillUnmount(){
-        this.removeBlock();
+        axios.delete(`/tasks/${this.props.task.id}`)
+        .then(()=>console.log("Deleted"))
+        .catch((err)=>console.log(err));
+        //this.removeBlock();
     }
 
     render() {
