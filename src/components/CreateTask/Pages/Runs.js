@@ -52,7 +52,6 @@ export default class Runs extends Component {
 
     addRun(){
         this.setState({...this.state, loader: true});
-        console.log("Index will be: ",this.state.runs.length);
         axios.post('/tasks/runs', {id_task: this.props.task.id, id_runtype: '2'})
         .then( (res) => {
             this.setState({
@@ -86,16 +85,21 @@ export default class Runs extends Component {
 
     removeRun(index, e){
         e.stopPropagation();
-        let runsCopy = this.state.runs;
-        for (let i=index; i<this.state.runs.length-1; i++){
-            runsCopy[i] = runsCopy[i+1];
-            runsCopy[i].index = i;
-        }
-        runsCopy.splice(-1,1);
-        this.setState({
-            ...this.state,
-            runs: runsCopy
-        })
+        axios.delete(`/tasks/runs/${this.state.runs[index].id}`)
+        .then(() => {
+            let runsCopy = this.state.runs;
+            for (let i=index; i<this.state.runs.length-1; i++){
+                runsCopy[i] = runsCopy[i+1];
+                runsCopy[i].index = i;
+            }
+            runsCopy.splice(-1,1);
+            this.setState({
+                ...this.state,
+                runs: runsCopy
+            })
+            }
+        )
+        .catch(err => console.log(err))
     }
 
     changeTitle(index, title){

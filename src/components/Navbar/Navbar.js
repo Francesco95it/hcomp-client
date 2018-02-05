@@ -6,6 +6,8 @@ import { logout } from '../../store/actions/sessionActions'
 
 import {Menu, Dropdown, Icon} from 'semantic-ui-react'
 
+import './style.css'
+
 class Navbar extends Component {
 
     navbarStyle= {
@@ -13,7 +15,8 @@ class Navbar extends Component {
     }
 
     logoItemStyle = {
-        paddingRight: '0'
+        paddingRight: '0',
+        color: 'white'
     }
 
     constructor(props){
@@ -35,7 +38,7 @@ class Navbar extends Component {
                 manageTasks = <Dropdown.Item><Icon name="tasks" /> Manage Tasks</Dropdown.Item>
             }
             loginButton =
-                <Dropdown item text={this.props.session.user.name}>
+                <Dropdown item id='whitePls' text={this.props.session.user.name}>
                     <Dropdown.Menu>
                         <Dropdown.Item as={Link} to={`/profile/${this.props.session.user.id}`} ><Icon name="user circle"/> Profile</Dropdown.Item>
                         {createTask}
@@ -46,11 +49,12 @@ class Navbar extends Component {
         }
 
         return (
-        <Menu secondary style={this.navbarStyle}>
+        <Menu secondary color='teal' inverted style={this.navbarStyle}>
+            <style>{`#whitePls{color: white !important}`}</style>
             <Menu.Item style={this.logoItemStyle}>
                 <h3>Social Human Computation</h3>
             </Menu.Item>
-            <Menu.Item name='home' as={Link} to='/' />
+            <Menu.Item name='home' id='whitePls' as={Link} to='/' />
             <Menu.Menu position='right'>
                 {loginButton}
             </Menu.Menu>

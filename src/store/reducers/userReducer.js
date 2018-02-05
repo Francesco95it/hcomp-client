@@ -8,7 +8,7 @@ function userState(state = {
     switch (action.type) {
 
         case "FETCH_USER_PENDING":
-        return {...state, fetching:true, fetched: false};
+        return {...state, fetching:true, fetched: false, error: false};
 
         case "FETCH_USER_FULFILLED":
         return {...state, fetching:false, fetched:true, user: action.payload.data};
