@@ -114,7 +114,7 @@ export default class General extends Component {
                         <Header content='Avatar' size='small' sub/>
 
                         <div>
-                            <Dropzone multiple={false} style={this.dzStyle} onDrop={this.onDrop.bind(this)}>
+                            <Dropzone accept='image/*' multiple={false} style={this.dzStyle} onDrop={this.onDrop.bind(this)}>
                                 {dropzone}
                             </Dropzone>
                             {this.state.avatarUpError?<Header as='h4' color='red' content='Something went wrong. Please try again.'/>:null}

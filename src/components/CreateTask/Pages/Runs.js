@@ -151,9 +151,9 @@ export default class Runs extends Component {
             }
         })
         promise.then(result => {
-            axios.put('/tasks/runs/'+this.state.runs[index].id, {imgname: sha256(result), base64: result})
+            axios.put('/tasks/runs/'+this.state.runs[index].id, {imgname: sha256(result+new Date().getTime()), base64: result})
             .then(res => {
-                console.log('Image at imgindex ', i, ' uploaded with name ', sha256(result));
+                console.log('Image at imgindex ', i, ' uploaded with name ', sha256(result+new Date().getTime()));
                 if(i !== 0) {
                     this.uploadImage(index, i-1);
                 } else {
@@ -210,8 +210,8 @@ export default class Runs extends Component {
 
         })
         promise.then(result => {
-            console.log("deleting: ", sha256(result));
-            axios.patch('/tasks/runs/'+this.state.runs[index].id, {imgname: sha256(result)})
+            console.log("deleting: ", sha256(result+new Date().getTime()));
+            axios.patch('/tasks/runs/'+this.state.runs[index].id, {imgname: sha256(result+new Date().getTime())})
             .then(res=>{
                 console.log("Image deleted");
                 runsCopy[index].images.splice(imgindex, 1);
@@ -222,6 +222,21 @@ export default class Runs extends Component {
             })
             .catch(err => console.log("Error deleting image: ",err));
         })
+    }
+
+    removeAllFiles(index) {
+        let runsCopy = this.state.runs;
+        console.log("deleting all");
+        axios.patch('/tasks/runs/'+this.state.runs[index].id, {deleteAll: true})
+        .then(res=>{
+            console.log("Images");
+            runsCopy[index].images = [];
+            this.setState({
+                ...this.state,
+                runs: runsCopy
+            });
+        })
+        .catch(err => console.log("Error deleting images: ",err));
     }
 
 
@@ -272,9 +287,10 @@ export default class Runs extends Component {
                                             <Input label='Title' labelPosition='left' type="text" placeholder='Run title' value={run.title} onChange={(e)=> {this.changeTitle(index, e.target.value)}}/>
                                         </Grid.Column>
                                         <Grid.Column stretched width={16}>
-                                            <Dropzone style={this.dzStyle} onDrop={(files) => this.onDrop(index, files)}>
+                                            <Dropzone accept='image/*' style={this.dzStyle} onDrop={(files) => this.onDrop(index, files)}>
                                                 {dropzone}
                                             </Dropzone>
+                                            {run.images.length>0? <Button color='red' onClick={()=>this.removeAllFiles(index)}>Delete all images</Button> : null}
                                         </Grid.Column>
                                         <Grid.Column stretched width={16}>
                                             <Input label='Description' labelPosition='left' type="text" placeholder='Description' value={run.description} onChange={(e)=> {this.changeDescription(index, e.target.value)}}/>
