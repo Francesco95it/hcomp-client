@@ -4,8 +4,10 @@ import {Redirect} from 'react-router-dom'
 
 import FacebookLogin from 'react-facebook-login'
 import GoogleLogin from 'react-google-login';
+
 import {Segment, Divider, Icon, Checkbox} from 'semantic-ui-react'
 
+import ModalLogin from './ModalLogin'
 import { login } from '../../store/actions/sessionActions'
 
 import './style.css'
@@ -54,12 +56,6 @@ class Login extends Component {
                 type: 'facebook',
                 isWriter: this.state.isWriter
             }))
-            // console.log(response);
-            // console.log({
-            //     data: {...response},
-            //     type: 'facebook',
-            //     isWriter: this.state.isWriter
-            // });
         }
     }
 
@@ -81,12 +77,6 @@ class Login extends Component {
                 type: 'google',
                 isWriter: this.state.isWriter
             }));
-            // console.log(response);
-            // console.log({
-            //     data: {...response},
-            //     type: 'google',
-            //     isWriter: this.state.isWriter
-            // });
         }
     }
 
@@ -94,9 +84,9 @@ class Login extends Component {
         let loginErr;
         if(this.state.loginError) loginErr=<h4 className="error">Something went wrong. Please login again.</h4>
         if(this.props.session.authenticated) return <Redirect to='/' />
-        if(this.state.loginSuccess) return <Redirect to='/' />
         return (
             <Segment textAlign='center' style={this.segmentStyle}>
+                <ModalLogin loginSuccess={this.state.loginSuccess} />
                 <h1 className="h1Style">Login with your social account</h1>
                 {loginErr}
                 <FacebookLogin
