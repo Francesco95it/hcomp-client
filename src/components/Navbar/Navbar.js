@@ -29,7 +29,7 @@ class Navbar extends Component {
     }
 
     render() {
-        let loginButton = <Menu.Item as={Link} to='/login' name='Login' />
+        let loginButton = <Menu.Item as={Link} to='/login' id='whitePls' name='Login' />
         if(this.props.session.authenticated) {
             let createTask = "";
             let manageTasks = "";
@@ -38,7 +38,7 @@ class Navbar extends Component {
                 manageTasks = <Dropdown.Item><Icon name="tasks" /> Manage Tasks</Dropdown.Item>
             }
             loginButton =
-                <Dropdown item id='whitePls' text={this.props.session.user.name}>
+                <Dropdown id='whitePls' item text={this.props.session.user.name}>
                     <Dropdown.Menu>
                         <Dropdown.Item as={Link} to={`/profile/${this.props.session.user.id}`} ><Icon name="user circle"/> Profile</Dropdown.Item>
                         {createTask}

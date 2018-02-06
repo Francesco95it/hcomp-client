@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {Segment, Grid} from 'semantic-ui-react'
 import axios from 'axios'
 
-import { set_general, set_general_title, set_runs, set_collaborators, fetch_users, set_tutorial, set_status, create_task, delete_task} from '../../store/actions/createTaskActions'
+import { set_general, set_general_title, set_runs, set_collaborators, fetch_users, set_tutorial, set_status, create_task, delete_task, upload_task} from '../../store/actions/createTaskActions'
 
 import VerticalMenu from './VerticalMenu'
 import General from './Pages/General'
@@ -12,6 +12,7 @@ import Runs from './Pages/Runs'
 import Collaborators from './Pages/Collaborators'
 import Tutorial from './Pages/Tutorial'
 import Status from './Pages/Status'
+import Savepage from './Pages/Savepage'
 
 
 class CreateTask extends Component {
@@ -42,7 +43,10 @@ class CreateTask extends Component {
         this.props.createTask(this.props.session.user.id);
     }
 
-    handleItemClick = (e, { name }) => this.setState({ ...this.state, activeItem: name })
+    handleItemClick = (e, { name }) => {
+        console.log(name);
+        this.setState({ ...this.state, activeItem: name });
+    }
 
     pageSelected(){
         switch (this.state.activeItem) {
@@ -56,6 +60,8 @@ class CreateTask extends Component {
                 return <Status {...this.props}/>
             case 'Collaborators':
                 return <Collaborators {...this.props}/>
+            case 'Save':
+                return <Savepage {...this.props}/>
             default:
                 return null
         }
@@ -117,7 +123,8 @@ function mapStateToProps(state) {
     return {
         session: state.session,
         user: state.user,
-        task: state.createTask.task
+        task: state.createTask.task,
+        allTask: state.createTask,
     };
 }
 
@@ -132,6 +139,7 @@ function mapDispatchToProps(dispatch){
         fetchUsers: ()=> dispatch(fetch_users()),
         createTask: (id)=> dispatch(create_task(id)),
         deleteTask: (id)=> dispatch(delete_task(id)),
+        uploadTask: (task)=> dispatch(upload_task(task)),
     }
 }
 

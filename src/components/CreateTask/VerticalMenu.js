@@ -5,6 +5,7 @@ import {Menu, Button} from 'semantic-ui-react'
 export default class VerticalMenu extends Component {
 
     saveBtn = {
+        marginTop: '20px',
         marginLeft: '20px',
         marginRight: '20px',
         minWidth: '-webkit-fill-available'
@@ -25,7 +26,7 @@ export default class VerticalMenu extends Component {
                 <Menu.Item name='Tutorial' active={activeItem === 'Tutorial'} onClick={this.handleItemClick} />
                 <Menu.Item name='Collaborators' active={activeItem === 'Collaborators'} onClick={this.handleItemClick} />
                 <Menu.Item name='Status' active={activeItem === 'Status'} onClick={this.handleItemClick} />
-                <Button color='green' style={this.saveBtn}>Save</Button>
+                <Button color='green' style={this.saveBtn} name='Save' onClick={this.handleItemClick}>Save</Button>
             </Menu>)
     }
 

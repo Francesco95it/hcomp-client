@@ -65,6 +65,6 @@ export function fetch_users() {
     return { type: FETCH_USERS, payload: axios.get(`/users?creator=true`)};
 }
 
-export function upload_task(data) {
-    return { type: UPLOAD_TASK, payload: axios.post(`/tasks`, data)};
+export function upload_task(task) {
+    return { type: UPLOAD_TASK, payload: axios.put(`/tasks/${task.id}`, task)};
 }
