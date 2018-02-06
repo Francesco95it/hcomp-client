@@ -27,6 +27,7 @@ export default class VerticalMenu extends Component {
                 <Menu.Item name='Collaborators' active={activeItem === 'Collaborators'} onClick={this.handleItemClick} />
                 <Menu.Item name='Status' active={activeItem === 'Status'} onClick={this.handleItemClick} />
                 <Button color='green' style={this.saveBtn} name='Save' onClick={this.handleItemClick}>Save</Button>
+                <Button color='red' style={this.saveBtn} name='Delete' onClick={this.handleItemClick}>Delete</Button>
             </Menu>)
     }
 

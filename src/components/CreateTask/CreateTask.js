@@ -13,6 +13,7 @@ import Collaborators from './Pages/Collaborators'
 import Tutorial from './Pages/Tutorial'
 import Status from './Pages/Status'
 import Savepage from './Pages/Savepage'
+import DeleteTask from './Pages/DeleteTask'
 
 
 class CreateTask extends Component {
@@ -44,9 +45,13 @@ class CreateTask extends Component {
     }
 
     handleItemClick = (e, { name }) => {
-        console.log(name);
         this.setState({ ...this.state, activeItem: name });
     }
+
+    // deleteBtn(){
+    //     this.props.deleteTask(this.props.task.id);
+    //     return <Redirect to='/' />
+    // }
 
     pageSelected(){
         switch (this.state.activeItem) {
@@ -61,7 +66,9 @@ class CreateTask extends Component {
             case 'Collaborators':
                 return <Collaborators {...this.props}/>
             case 'Save':
-                return <Savepage {...this.props}/>
+                return <Savepage {...this.props} removeBlock={this.removeBlock}/>
+            case 'Delete':
+                return <DeleteTask {...this.props} />
             default:
                 return null
         }
@@ -72,6 +79,7 @@ class CreateTask extends Component {
         var confirmationMessage = "\o/";
 
         (e || window.event).returnValue = confirmationMessage;
+        console.log(confirmationMessage);
         return confirmationMessage;
     }
 
@@ -85,15 +93,16 @@ class CreateTask extends Component {
     }
 
     componentDidMount(){
-        //TODO: CHANGE THIS
-        //this.addBlock();
+        this.addBlock();
     }
 
     componentWillUnmount(){
-        axios.delete(`/tasks/${this.props.task.id}`)
-        .then(()=>console.log("Deleted"))
-        .catch((err)=>console.log(err));
-        //this.removeBlock();
+        if(!this.props.allTask.uploaded){
+            axios.delete(`/tasks/${this.props.task.id}`)
+            .then(()=>console.log("Deleted"))
+            .catch((err)=>console.log(err));
+        }
+        this.removeBlock();
     }
 
     render() {

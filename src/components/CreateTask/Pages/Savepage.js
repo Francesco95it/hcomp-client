@@ -5,28 +5,30 @@ import {Segment, Header} from 'semantic-ui-react'
 export default class Savepage extends Component {
 
     componentDidMount(){
-        const task = this.props.task;
-        const newRuns = this.props.task.runs.map(run => { return {
-            id: run.id,
-            title: run.title,
-            description: run.description,
-            introduction: run.introduction,
-            type: run.type.type,
-            question: run.type.question,
-            index: run.index
-        }});
-        const newCollaborators = this.props.task.collaborators.list.map(collaborator => {return collaborator.id});
-        const prepTask = {
-            id: task.id,
-            title: task.general.title,
-            description: task.general.title,
-            introduction: task.general.introduction,
-            runs: newRuns,
-            collaborators: newCollaborators,
-            tutorial: task.tutorial,
-            is_active: task.status
-        }
+        this.props.removeBlock();
         setTimeout(()=>{
+            const task = this.props.task;
+            const newRuns = this.props.task.runs.map(run => { return {
+                id: run.id,
+                title: run.title,
+                description: run.description,
+                introduction: run.introduction,
+                type: run.type.type,
+                question: run.type.question,
+                index: run.index
+            }});
+            const newCollaborators = this.props.task.collaborators.list.map(collaborator => {return collaborator.id});
+            const prepTask = {
+                id: task.id,
+                title: task.general.title,
+                description: task.general.title,
+                introduction: task.general.introduction,
+                runs: newRuns,
+                collaborators: newCollaborators,
+                tutorial: task.tutorial,
+                is_active: task.status
+            }
+            console.log(prepTask);
             this.props.uploadTask(prepTask);
         }, 500);
     }
