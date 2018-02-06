@@ -13,6 +13,7 @@ export const SET_TUTORIAL = 'SET_TUTORIAL'
 export const SET_STATUS = 'SET_STATUS'
 export const SET_GENERAL_TITLE = 'SET_GENERAL_TITLE'
 export const CREATE_TASK = 'CREATE_TASK'
+export const DELETE_TASK = 'DELETE_TASK'
 
 /*
 * other constants
@@ -54,6 +55,10 @@ export function create_task(id){
             'Content-Type': 'application/json',
         }
     })}
+}
+
+export function delete_task(id){
+    return { type: DELETE_TASK, payload: axios.delete(`/tasks/${id}`)}
 }
 
 export function fetch_users() {

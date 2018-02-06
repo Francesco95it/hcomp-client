@@ -33,6 +33,7 @@ export default class Runs extends Component {
         this.state = {
             runs: (this.props.task.runs),
             loader: false,
+            error: false
         }
         this.addRun = this.addRun.bind(this);
         this.toggleRun = this.toggleRun.bind(this);
@@ -73,7 +74,13 @@ export default class Runs extends Component {
                 }]
             })
         })
-        .catch(e => console.log("Error: ",e));
+        .catch(err => {
+            console.log("Error: ",err);
+            this.setState({
+                ...this.state,
+                error: err,
+            });
+        });
     }
 
     toggleRun(index, e){
@@ -99,7 +106,13 @@ export default class Runs extends Component {
             })
             }
         )
-        .catch(err => console.log(err))
+        .catch(err => {
+            console.log(err);
+            this.setState({
+                ...this.state,
+                error: err,
+            });
+        })
     }
 
     changeTitle(index, title){
@@ -150,31 +163,36 @@ export default class Runs extends Component {
                     resolve(reader.result);
                 }
                 else {
-                    reject(Error("Failed converting to base64"));
+                    this.setState({
+                        ...this.state,
+                        error: "Failed to convert in base64",
+                    });
                 }
             }
         })
         promise.then(result => {
-            axios.put('/tasks/runs/'+this.state.runs[index].id, {imgname: sha256(result+new Date().getTime()), base64: result})
+            const name = sha256(result+new Date().getTime());
+            axios.put('/tasks/runs/'+this.state.runs[index].id, {imgname: name, base64: result})
             .then(res => {
-                console.log('Image at imgindex ', i, ' uploaded with name ', sha256(result+new Date().getTime()));
                 let runsCopy = this.state.runs;
                 runsCopy[index].images[i].uploading = false;
+                runsCopy[index].images[i].name = name;
                 this.setState({...this.state, runs: runsCopy});
                 if(i>0) this.uploadImage(index, i-1);
             })
             .catch(err => {
-                let runsCopy = this.state.runs;
-                runsCopy[index].images[i].uploading = false;
-                runsCopy[index].uploadingError = true;
-                this.setState({...this.state, runs: runsCopy});
                 console.log(err);
+                this.setState({
+                    ...this.state,
+                    error: err,
+                });
             });
         }, err => {
-            let runsCopy = this.state.runs;
-            runsCopy[index].images.map(img => { return {image: img.image, uploading: false}})
-            this.setState({...this.state, runs: runsCopy});
             console.log(err);
+            this.setState({
+                ...this.state,
+                error: err,
+            });
         })
     }
 
@@ -197,53 +215,45 @@ export default class Runs extends Component {
             ...this.state,
             runs: runsCopy
         })
-        const promise = new Promise((resolve, reject) => {
-            const reader = new FileReader();
-
-            reader.readAsDataURL(this.state.runs[index].images[imgindex].image);
-
-            reader.onload = () => {
-                if (!!reader.result) {
-                    resolve(reader.result);
-                }
-                else {
-                    reject(Error("Failed converting to base64"));
-                }
-            }
-
+        axios.patch('/tasks/runs/'+this.state.runs[index].id, {imgname: runsCopy[index].images[imgindex].name})
+        .then(res=>{
+            runsCopy[index].images.splice(imgindex, 1);
+            this.setState({
+                ...this.state,
+                runs: runsCopy
+            });
         })
-        promise.then(result => {
-            console.log("deleting: ", sha256(result+new Date().getTime()));
-            axios.patch('/tasks/runs/'+this.state.runs[index].id, {imgname: sha256(result+new Date().getTime())})
-            .then(res=>{
-                console.log("Image deleted");
-                runsCopy[index].images.splice(imgindex, 1);
-                this.setState({
-                    ...this.state,
-                    runs: runsCopy
-                });
-            })
-            .catch(err => console.log("Error deleting image: ",err));
-        })
+        .catch(err => {
+            console.log("Error deleting image: ",err);
+            this.setState({
+                ...this.state,
+                error: err,
+            });
+        });
     }
 
     removeAllFiles(index) {
         let runsCopy = this.state.runs;
-        console.log("deleting all");
         axios.patch('/tasks/runs/'+this.state.runs[index].id, {deleteAll: true})
         .then(res=>{
-            console.log("Images");
             runsCopy[index].images = [];
             this.setState({
                 ...this.state,
                 runs: runsCopy
             });
         })
-        .catch(err => console.log("Error deleting images: ",err));
+        .catch(err => {
+            console.log("Error deleting images: ",err);
+            this.setState({
+                ...this.state,
+                error: err,
+            });
+        });
     }
 
 
     render(){
+        if(this.state.error) return (<div><Header color='red'>Something went wrong. We saved the work you did until now, you can find your task in your task page. Please try again later.</Header><br/><p>Your error is {this.state.error}</p></div>)
         if(this.state.loader) return <Loader active inline='centered' />
         let dropzone = (
             <div style={{textAlign: 'center'}}>

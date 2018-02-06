@@ -1,25 +1,27 @@
-function createTaskState(state = {
-    task: {
-        id: "",
-        created: false,
-        error: null,
-        general: {
-            title: "No name task",
-            description: "",
-            introduction: "",
-            avatar: []
-        },
-        runs: [],
-        collaborators: {
-            list: [],
-            users: [],
-            fetching: false,
-            fetched: false,
-            error: null
-        },
-        tutorial: [],
-        status: 'private',
+const taskStructure = {
+    id: "",
+    created: false,
+    error: null,
+    general: {
+        title: "No name task",
+        description: "",
+        introduction: "",
+        avatar: []
     },
+    runs: [],
+    collaborators: {
+        list: [],
+        users: [],
+        fetching: false,
+        fetched: false,
+        error: null
+    },
+    tutorial: [],
+    status: 'private',
+}
+
+function createTaskState(state = {
+    task: taskStructure,
     uploading: false,
     uploaded: false,
     error: null
@@ -45,11 +47,20 @@ function createTaskState(state = {
         case "SET_STATUS":
         return {...state, task:{...state.task, status: action.payload}};
 
+        case "DELETE_TASK_PENDING":
+        return {...state};
+
+        case "DELETE_TASK_FULFILLED":
+        return {...state, task: taskStructure};
+
+        case "DELETE_TASK_REJECTED":
+        return {...state};
+
         case "CREATE_TASK_PENDING":
         return {...state, task:{...state.task, created: false, error: null}};
 
         case "CREATE_TASK_FULFILLED":
-        return {...state, task:{...state.task, created: true, id: action.payload.data}};
+        return {...state, task:{...taskStructure, created: true, id: action.payload.data}};
 
         case "CREATE_TASK_REJECTED":
         return {...state, task:{...state.task, created: false, error: action.payload}};

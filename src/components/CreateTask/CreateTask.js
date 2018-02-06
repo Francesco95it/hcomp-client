@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {Segment, Grid} from 'semantic-ui-react'
 import axios from 'axios'
 
-import { set_general, set_general_title, set_runs, set_collaborators, fetch_users, set_tutorial, set_status, create_task} from '../../store/actions/createTaskActions'
+import { set_general, set_general_title, set_runs, set_collaborators, fetch_users, set_tutorial, set_status, create_task, delete_task} from '../../store/actions/createTaskActions'
 
 import VerticalMenu from './VerticalMenu'
 import General from './Pages/General'
@@ -131,6 +131,7 @@ function mapDispatchToProps(dispatch){
         setTutorial: (tutorial) => dispatch(set_tutorial(tutorial)),
         fetchUsers: ()=> dispatch(fetch_users()),
         createTask: (id)=> dispatch(create_task(id)),
+        deleteTask: (id)=> dispatch(delete_task(id)),
     }
 }
 
