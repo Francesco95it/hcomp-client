@@ -4,7 +4,7 @@ import {Segment, Header} from 'semantic-ui-react'
 
 export default class Savepage extends Component {
 
-    componentWillMount(){
+    componentDidMount(){
         const task = this.props.task;
         const newRuns = this.props.task.runs.map(run => { return {
             id: run.id,
@@ -14,18 +14,21 @@ export default class Savepage extends Component {
             type: run.type.type,
             question: run.type.question,
             index: run.index
-        }})
+        }});
+        const newCollaborators = this.props.task.collaborators.list.map(collaborator => collaborator.id);
         const prepTask = {
             id: task.id,
             title: task.general.title,
             description: task.general.title,
             introduction: task.general.introduction,
             runs: newRuns,
-            collaborators: task.collaborators.list,
+            collaborators: newCollaborators,
             tutorial: task.tutorial,
-            status: task.status
+            is_active: task.status
         }
-        this.props.uploadTask(prepTask);
+        setTimeout(()=>{
+            this.props.uploadTask(prepTask);
+        }, 500);
     }
 
     render(){

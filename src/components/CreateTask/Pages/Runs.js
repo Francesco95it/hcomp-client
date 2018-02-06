@@ -43,6 +43,7 @@ export default class Runs extends Component {
         this.changeIntroduction = this.changeIntroduction.bind(this);
         this.changeType = this.changeType.bind(this);
         this.removeFile = this.removeFile.bind(this);
+        this.removeAllFiles = this.removeAllFiles.bind(this);
         this.uploadImage = this.uploadImage.bind(this);
         this.onDrop = this.onDrop.bind(this);
     }
@@ -67,7 +68,7 @@ export default class Runs extends Component {
                     uploadingError: false,
                     type: {
                         question: "",
-                        type: "yesno"
+                        type: 2
                     },
                     index: this.state.runs.length,
                     hided: false
@@ -76,10 +77,10 @@ export default class Runs extends Component {
         })
         .catch(err => {
             console.log("Error: ",err);
-            this.setState({
-                ...this.state,
-                error: err,
-            });
+            // this.setState({
+            //     ...this.state,
+            //     error: err,
+            // });
         });
     }
 
@@ -108,10 +109,10 @@ export default class Runs extends Component {
         )
         .catch(err => {
             console.log(err);
-            this.setState({
-                ...this.state,
-                error: err,
-            });
+            // this.setState({
+            //     ...this.state,
+            //     error: err,
+            // });
         })
     }
 
@@ -182,17 +183,17 @@ export default class Runs extends Component {
             })
             .catch(err => {
                 console.log(err);
-                this.setState({
-                    ...this.state,
-                    error: err,
-                });
+                // this.setState({
+                //     ...this.state,
+                //     error: err,
+                // });
             });
         }, err => {
             console.log(err);
-            this.setState({
-                ...this.state,
-                error: err,
-            });
+            // this.setState({
+            //     ...this.state,
+            //     error: err,
+            // });
         })
     }
 
@@ -330,18 +331,16 @@ export default class Runs extends Component {
                                                     <Radio
                                                         label='Yes/No'
                                                         name='radioGroup'
-                                                        value='yesno'
-                                                        checked={run.type.type === 'yesno'}
-                                                        onChange={(e)=> {this.changeType(run.index, run.type.question, 'yesno')}}
+                                                        checked={run.type.type === 2}
+                                                        onChange={(e)=> {this.changeType(run.index, run.type.question, 2)}}
                                                     />
                                                 </Form.Field>
                                                 <Form.Field>
                                                     <Radio
                                                         label='Other'
                                                         name='radioGroup'
-                                                        value='other'
-                                                        checked={run.type.type === 'other'}
-                                                        onChange={(e)=> {this.changeType(run.index, run.type.question, 'other')}}
+                                                        checked={run.type.type === 3}
+                                                        onChange={(e)=> {this.changeType(run.index, run.type.question, 3)}}
                                                     />
                                                 </Form.Field>
                                             </Form>

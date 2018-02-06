@@ -17,7 +17,7 @@ const taskStructure = {
         error: null
     },
     tutorial: [],
-    status: 'private',
+    status: false,
 }
 
 function createTaskState(state = {

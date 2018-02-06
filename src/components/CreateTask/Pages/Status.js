@@ -22,16 +22,14 @@ export default class Status extends Component {
                 <Radio
                 label='Private'
                 name='radioGroup'
-                value='private'
-                checked={this.state.value==='private'}
-                onChange={()=>this.setState({...this.state, value: 'private'})}
+                checked={!this.state.value}
+                onChange={()=>this.setState({...this.state, value: false})}
                 /><br />
                 <Radio
                 label='Public'
                 name='radioGroup'
-                value='public'
-                checked={this.state.value==='public'}
-                onChange={()=>this.setState({...this.state, value: 'public'})}
+                checked={this.state.value}
+                onChange={()=>this.setState({...this.state, value: true})}
                 />
             </div>
         )
