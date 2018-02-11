@@ -7,10 +7,10 @@ import axios from 'axios'
 import Homepage from './components/Homepage/Homepage.js';
 import Login from './components/Login/Login.js';
 import Profile from './components/Profile/Profile.js';
-import AuthRoute from './components/AuthRoute/AuthRoute.js';
-import AuthWriterRoute from './components/AuthRoute/AuthWriterRoute.js';
+import AuthWriter from './components/AuthCheck/AuthWriter.js';
 import Navbar from './components/Navbar/Navbar.js';
 import CreateTask from './components/CreateTask/CreateTask.js';
+import ManageTasks from './components/ManageTasks/ManageTasks.js';
 import NotFound from './components/NotFound/NotFound.js';
 
 
@@ -27,13 +27,12 @@ ReactDOM.render(
                 <Switch>
                     <Route exact path='/' component={Homepage} />
                     <Route path='/login' component={Login} />
-                    <AuthRoute back={'/'}>
-                        <Route exact path='/profile' component={Profile} />
-                        <Route path='/profile/:id' component={Profile} />
-                        <AuthWriterRoute back={'/'} >
-                            <Route path='/createTask' component={CreateTask} />
-                        </AuthWriterRoute>
-                    </AuthRoute>
+                    <AuthWriter back='/'>
+                        <Route path='/createTask' component={CreateTask} />
+                        <Route path='/manageTasks' component={ManageTasks} />
+                        <Route exact path='/profile' component={Profile} timestamp={new Date().getTime()} />
+                        <Route path='/profile/:id' component={Profile} timestamp={new Date().getTime()} />
+                    </AuthWriter>
                     <Route path='*' component={NotFound} />
                 </Switch>
             </div>

@@ -25,6 +25,7 @@ sessionService.initSessionService(store)
         sessionService.deleteUser();
     }
     if(store.getState().session.authenticated){
+        console.log("Adding jwt");
         axios.defaults.headers.common['Authorization'] = store.getState().session.user.jwt;
     } else axios.defaults.headers.common['Authorization'] = "";
     console.log("Session initialized")
