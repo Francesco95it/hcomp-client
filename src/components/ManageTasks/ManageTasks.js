@@ -3,7 +3,9 @@ import {connect} from 'react-redux'
 
 import axios from 'axios'
 
-import {Segment} from 'semantic-ui-react'
+import {Segment, List, Header} from 'semantic-ui-react'
+
+import TaskLi from './TaskLi'
 
 class ManageTasks extends Component {
 
@@ -14,6 +16,7 @@ class ManageTasks extends Component {
             fetched: false,
             error: false
         }
+        this.deleteTask = this.deleteTask.bind(this)
     }
 
     componentDidMount(){
@@ -36,16 +39,31 @@ class ManageTasks extends Component {
         );
     }
 
+    deleteTask(e, id){
+        e.stopPropagation();
+        axios.delete(`/tasks/${id}`)
+        .then(()=>{
+            this.setState({
+                ...this.state,
+                tasks: this.state.tasks.filter(task => task.id!==id)
+            })
+        })
+        .catch((err)=>console.log(err));
+    }
+
     render(){
         if(this.state.error) return <Segment style={{minHeight: '200px'}}>An error occurred. Please try again later.</Segment>
         if(!this.state.fetched) return <Segment loading style={{minHeight: '200px'}} />
 
         return (
-            <Segment>
-                {this.state.tasks.map((task) => {
-                    console.log(task);
-                    return <Segment key={task.id}>{task.name ? task.name : task.description}</Segment>
-                })}
+            <Segment style={{marginTop: '0'}}>
+                <Header>Your tasks:</Header>
+                <List relaxed='very' selection verticalAlign='middle'>
+                    {this.state.tasks.map((task) => {
+                        console.log(task);
+                        return <TaskLi key={task.id} task={task} deleteTask={this.deleteTask}/>
+                    })}
+                </List>
             </Segment>
         )
 

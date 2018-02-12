@@ -62,7 +62,7 @@ export function delete_task(id){
 }
 
 export function fetch_users() {
-    return { type: FETCH_USERS, payload: axios.get(`/users?creator=true`)};
+    return { type: FETCH_USERS, payload: axios.get(`/users?filter=creator&parameter=true`)};
 }
 
 export function upload_task(task) {
