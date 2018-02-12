@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import axios from 'axios'
 
 import {Segment, List, Header} from 'semantic-ui-react'
+import { set_all } from '../../store/actions/modifyTaskActions'
 
 import TaskLi from './TaskLi'
 
@@ -61,7 +62,7 @@ class ManageTasks extends Component {
                 <List relaxed='very' selection verticalAlign='middle'>
                     {this.state.tasks.map((task) => {
                         console.log(task);
-                        return <TaskLi key={task.id} task={task} deleteTask={this.deleteTask}/>
+                        return <TaskLi key={task.id} task={task} setAll={this.props.setAll} deleteTask={this.deleteTask}/>
                     })}
                 </List>
             </Segment>
@@ -79,7 +80,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch){
     return {
-
+        setAll: (task)=> dispatch(set_all(task)),
     }
 }
 

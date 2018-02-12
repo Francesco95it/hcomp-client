@@ -84,17 +84,14 @@ export default class General extends Component {
                 <p>Drop an image or click here to browse</p>
             </div>
         );
-        if(this.state.avatar.length > 0) {
-            dropzone = this.state.avatar.map((image, index) => {
-                return (
-                    <Segment key={index} basic>
+        if(this.state.avatar) {
+            dropzone =
+                    <Segment basic>
                     {this.state.avatarUploading?
                         <Dimmer active>
                             <Loader indeterminate>Uploading</Loader>
                         </Dimmer>:null}
-                    <Image src={image.preview} size='small' inline/></Segment>
-                )
-            });
+                    <Image src={this.state.avatar} size='small' inline/></Segment>
         }
 
         return (

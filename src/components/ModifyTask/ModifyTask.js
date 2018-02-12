@@ -1,10 +1,11 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import {Redirect} from 'react-router-dom'
 
 import {Segment, Grid} from 'semantic-ui-react'
 import axios from 'axios'
 
-import { set_general, set_general_title, set_runs, set_collaborators, fetch_users, set_tutorial, set_status, create_task, delete_task, upload_task} from '../../store/actions/createTaskActions'
+import { set_general, set_general_title, set_runs, set_collaborators, fetch_users, set_tutorial, set_status, delete_task, upload_task} from '../../store/actions/modifyTaskActions'
 
 import VerticalMenu from './VerticalMenu'
 import General from './Pages/General'
@@ -41,17 +42,33 @@ class CreateTask extends Component {
     }
 
     componentWillMount(){
-        this.props.createTask(this.props.session.user.id);
+        if(this.props.task.id){
+            axios.get(`/tasks/runs?filter=id_task&parameter=${this.props.task.id}`)
+            .then((res)=>{
+                this.props.setRuns(res.data.map(run => {
+                    return {
+                        id: run.id,
+                        title: (run.name || "Untitled run"),
+                        description: run.description,
+                        introduction: run.introduction,
+                        images: run.images,
+                        type: {
+                            question: run.question,
+                            type: run.id_runtype
+                        },
+                        index: run.index,
+                    }
+                }));
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+        }
     }
 
     handleItemClick = (e, { name }) => {
         this.setState({ ...this.state, activeItem: name });
     }
-
-    // deleteBtn(){
-    //     this.props.deleteTask(this.props.task.id);
-    //     return <Redirect to='/' />
-    // }
 
     pageSelected(){
         switch (this.state.activeItem) {
@@ -97,15 +114,11 @@ class CreateTask extends Component {
     }
 
     componentWillUnmount(){
-        if(!this.props.allTask.uploaded){
-            axios.delete(`/tasks/${this.props.task.id}`)
-            .then(()=>console.log("Deleted"))
-            .catch((err)=>console.log(err));
-        }
         this.removeBlock();
     }
 
     render() {
+        if(!this.props.task.id) return <Redirect to='/ManageTasks' />
         if(!this.props.task.created) return <Segment loading style={{minHeight: '200px'}} />
         if(this.props.task.error) return <Segment style={{minHeight: '200px'}} content='Something went wrong. Please try again later.'/>
         return (
@@ -132,8 +145,8 @@ function mapStateToProps(state) {
     return {
         session: state.session,
         user: state.user,
-        task: state.createTask.task,
-        allTask: state.createTask,
+        task: state.modifyTask.task,
+        allTask: state.modifyTask,
     };
 }
 
@@ -146,7 +159,6 @@ function mapDispatchToProps(dispatch){
         setStatus: (status) => dispatch(set_status(status)),
         setTutorial: (tutorial) => dispatch(set_tutorial(tutorial)),
         fetchUsers: ()=> dispatch(fetch_users()),
-        createTask: (id)=> dispatch(create_task(id)),
         deleteTask: (id)=> dispatch(delete_task(id)),
         uploadTask: (task)=> dispatch(upload_task(task)),
     }

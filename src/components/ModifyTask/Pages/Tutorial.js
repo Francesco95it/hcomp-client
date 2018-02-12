@@ -18,7 +18,6 @@ export default class Tutorial extends Component {
     }
 
     addStep(){
-        console.log('Eu');
         this.setState({
             steps: [...this.state.steps, {
                 index: this.state.steps.length,

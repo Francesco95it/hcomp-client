@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-import {Input, Icon, List, Header, Image} from 'semantic-ui-react'
+import {Input, Icon, List, Header, Image, Segment} from 'semantic-ui-react'
 
 export default class Collaborators extends Component {
 
@@ -54,10 +54,21 @@ export default class Collaborators extends Component {
         })
     }
 
-
+    updateUsers(){
+        let collabCopy = [];
+        for (let collaborator of this.state.collaborators) {
+            collabCopy.push(this.props.task.collaborators.users.find( user => collaborator===user.id));
+        }
+        this.setState({
+            ...this.state,
+            collaborators: collabCopy
+        })
+    }
 
 
     render(){
+
+        if(!this.props.task.collaborators.fetched) return <Segment loading style={{minHeight: '200px'}} />
 
         return (
             <div>
@@ -83,6 +94,7 @@ export default class Collaborators extends Component {
                 </datalist>
                 <List divided relaxed>
                     {this.state.collaborators.map((collaborator)=>{
+                        if(!collaborator.name) this.updateUsers();
                         return (
                             <List.Item key={collaborator.id} style={this.listStyle}>
                                 <Image avatar src={collaborator.img} />

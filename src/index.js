@@ -10,6 +10,7 @@ import Profile from './components/Profile/Profile.js';
 import AuthWriter from './components/AuthCheck/AuthWriter.js';
 import Navbar from './components/Navbar/Navbar.js';
 import CreateTask from './components/CreateTask/CreateTask.js';
+import ModifyTask from './components/ModifyTask/ModifyTask.js';
 import ManageTasks from './components/ManageTasks/ManageTasks.js';
 import NotFound from './components/NotFound/NotFound.js';
 
@@ -30,6 +31,7 @@ ReactDOM.render(
                     <AuthWriter back='/'>
                         <Route path='/createTask' component={CreateTask} />
                         <Route path='/manageTasks' component={ManageTasks} />
+                        <Route path='/editTask' component={ModifyTask} />
                         <Route exact path='/profile' component={Profile} timestamp={new Date().getTime()} />
                         <Route path='/profile/:id' component={Profile} timestamp={new Date().getTime()} />
                     </AuthWriter>

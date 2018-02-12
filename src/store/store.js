@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import promise from 'redux-promise-middleware'
 import userState from './reducers/userReducer'
 import createTaskState from './reducers/createTaskReducer'
+import modifyTaskState from './reducers/modifyTaskReducer'
 
 import axios from 'axios'
 
@@ -13,6 +14,7 @@ const middleWare = applyMiddleware(createLogger(), thunk, promise());
 const reducers = combineReducers({
     user: userState,
     createTask: createTaskState,
+    modifyTask: modifyTaskState,
     session: sessionReducer
 })
 
