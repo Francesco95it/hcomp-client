@@ -21,7 +21,7 @@ export default class Savepage extends Component {
             const prepTask = {
                 id: task.id,
                 name: task.general.title,
-                description: task.general.title,
+                description: task.general.description,
                 introduction: task.general.introduction,
                 runs: newRuns,
                 collaborators: newCollaborators,

@@ -9,7 +9,6 @@ const sha256 = require('js-sha256')
 export default class General extends Component {
 
     inputStyle={
-        maxHeight: '30px',
         width: '-webkit-fill-available'
     }
     dzStyle = {
@@ -103,10 +102,10 @@ export default class General extends Component {
                     <Grid.Column stretched width={10}>
                     <div>
                         <Header content='Project title' size='small' sub/>
-                        <Input type="text" value={this.state.title} onChange={(e)=> {this.setState({...this.state, title: e.target.value}); this.props.setGeneralTitle(e.target.value)}} style={this.inputStyle}/>
+                        <Input type="text" value={this.state.title} size='small' onChange={(e)=> {this.setState({...this.state, title: e.target.value}); this.props.setGeneralTitle(e.target.value)}} style={this.inputStyle}/>
                         <p>Set your project title</p>
                         <Header content='Description' size='small' sub/>
-                        <Input type="text" value={this.state.description} onChange={(e)=> this.setState({...this.state, description: e.target.value})} style={this.inputStyle}/>
+                        <Input type="text" value={this.state.description} size='small' onChange={(e)=> this.setState({...this.state, description: e.target.value})} style={this.inputStyle}/>
                         <p>Describe your project in one line</p>
                     </div>
                     </Grid.Column>

@@ -57,8 +57,10 @@ export default class Collaborators extends Component {
     updateUsers(){
         let collabCopy = [];
         for (let collaborator of this.state.collaborators) {
-            collabCopy.push(this.props.task.collaborators.users.find( user => collaborator===user.id));
+            console.log(this.props.task.collaborators.users.find( user => (collaborator===user.id || collaborator.id===user.id)));
+            collabCopy.push(this.props.task.collaborators.users.find( user => (collaborator===user.id || collaborator.id===user.id)));
         }
+        console.log("collabCopy: ", collabCopy);
         this.setState({
             ...this.state,
             collaborators: collabCopy
@@ -67,7 +69,7 @@ export default class Collaborators extends Component {
 
 
     render(){
-
+        console.log(this.state);
         if(!this.props.task.collaborators.fetched) return <Segment loading style={{minHeight: '200px'}} />
 
         return (
@@ -94,6 +96,7 @@ export default class Collaborators extends Component {
                 </datalist>
                 <List divided relaxed>
                     {this.state.collaborators.map((collaborator)=>{
+                        console.log(collaborator);
                         if(!collaborator.name) this.updateUsers();
                         return (
                             <List.Item key={collaborator.id} style={this.listStyle}>
