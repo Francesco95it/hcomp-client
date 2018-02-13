@@ -6,7 +6,6 @@ import axios from 'axios'
 
 export const UPLOAD_TASK = 'UPLOAD_TASK'
 export const FETCH_USERS = 'FETCH_USERS'
-export const SET_ALL = 'SET_ALL'
 export const SET_GENERAL = 'SET_GENERAL'
 export const SET_RUNS = 'SET_RUNS'
 export const SET_COLLABORATORS = 'SET_COLLABORATORS'
@@ -20,39 +19,11 @@ export const DELETE_TASK = 'DELETE_TASK'
 * other constants
 */
 
-const taskStructurer = (task) => {
-    console.log(task);
-    return {
-        id: task.id,
-        created: true,
-        error: null,
-        general: {
-            name: task.name,
-            description: task.description,
-            introduction: task.introduction,
-            avatar: task.avatar_image
-        },
-        runs: task.runs,
-        collaborators: {
-            list: task.collaborators,
-            users: [],
-            fetching: false,
-            fetched: false,
-            error: null
-        },
-        tutorial: task.tutorial.map(step => JSON.parse(step)),
-        status: task.is_active
-    }
-}
-
 
 /*
 * action creators
 */
 
-export function set_all(task) {
-    return { type: SET_ALL, payload: taskStructurer(task)}
-}
 
 export function set_general(data) {
     return { type: SET_GENERAL, payload: data};

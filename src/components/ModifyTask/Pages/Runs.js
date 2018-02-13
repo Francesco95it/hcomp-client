@@ -270,6 +270,7 @@ export default class Runs extends Component {
                     <Icon name='add circle' />
                 </Button>
                 {this.state.runs.map((run)=>{
+                    console.log(run);
                     if(this.state.runs[run.index].images.length > 0) {
                         dropzone = this.state.runs[run.index].images.map((image, imgindex) => {
                             const indexes = {
