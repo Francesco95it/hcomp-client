@@ -50,11 +50,12 @@ class Navbar extends Component {
 
         return (
         <Menu secondary color='teal' inverted style={this.navbarStyle}>
-            <style>{`#whitePls{color: white !important}`}</style>
+            <style>{`#whitePls{color: white !important; margin: 0}`}</style>
             <Menu.Item style={this.logoItemStyle}>
                 <h3>Social Human Computation</h3>
             </Menu.Item>
             <Menu.Item name='home' id='whitePls' as={Link} to='/' />
+            {this.props.session.authenticated? <Menu.Item name='search' id='whitePls' as={Link} to='/searchTasks' /> : null}
             <Menu.Menu position='right'>
                 {loginButton}
             </Menu.Menu>
