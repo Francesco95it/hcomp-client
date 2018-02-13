@@ -9,8 +9,7 @@ export default class Collaborators extends Component {
         alignItems: 'center'
     }
 
-    inputStyle={
-        maxHeight: '30px',
+    inputStyle = {
         width: '-webkit-fill-available'
     }
 
@@ -69,7 +68,6 @@ export default class Collaborators extends Component {
 
 
     render(){
-        console.log(this.state);
         if(!this.props.task.collaborators.fetched) return <Segment loading style={{minHeight: '200px'}} />
 
         return (
@@ -79,6 +77,7 @@ export default class Collaborators extends Component {
                 <Input
                     action={{ color: 'teal', icon: 'add', onClick: this.addCollaborator }}
                     loading={!this.props.task.collaborators.fetched}
+                    size='small'
                     icon='users'
                     iconPosition='left'
                     disabled={!this.props.task.collaborators.fetched}

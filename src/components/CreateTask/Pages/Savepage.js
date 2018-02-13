@@ -10,7 +10,7 @@ export default class Savepage extends Component {
             const task = this.props.task;
             const newRuns = this.props.task.runs.map(run => { return {
                 id: run.id,
-                title: run.title,
+                name: run.name,
                 description: run.description,
                 introduction: run.introduction,
                 type: run.type.type,
@@ -20,7 +20,7 @@ export default class Savepage extends Component {
             const newCollaborators = this.props.task.collaborators.list.map(collaborator => {return collaborator.id});
             const prepTask = {
                 id: task.id,
-                name: task.general.title,
+                name: task.general.name,
                 description: task.general.description,
                 introduction: task.general.introduction,
                 runs: newRuns,

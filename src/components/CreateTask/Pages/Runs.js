@@ -38,7 +38,7 @@ export default class Runs extends Component {
         this.addRun = this.addRun.bind(this);
         this.toggleRun = this.toggleRun.bind(this);
         this.removeRun = this.removeRun.bind(this);
-        this.changeTitle = this.changeTitle.bind(this);
+        this.changeName = this.changeName.bind(this);
         this.changeDescription = this.changeDescription.bind(this);
         this.changeIntroduction = this.changeIntroduction.bind(this);
         this.changeType = this.changeType.bind(this);
@@ -61,7 +61,7 @@ export default class Runs extends Component {
                 loader: false,
                 runs: [...this.state.runs, {
                     id: res.data,
-                    title: `Untitled run`,
+                    name: `Untitled run`,
                     description: "",
                     introduction: "",
                     images: [],
@@ -116,9 +116,9 @@ export default class Runs extends Component {
         })
     }
 
-    changeTitle(index, title){
+    changeName(index, name){
         let runsCopy = this.state.runs;
-        runsCopy[index].title = title;
+        runsCopy[index].name = name;
         this.setState({
             ...this.state,
             runs: runsCopy
@@ -297,7 +297,7 @@ export default class Runs extends Component {
                     return (
                         <Segment.Group key={run.index}  piled>
                             <Segment onClick={(e)=>this.toggleRun(run.index, e)}>
-                                <Header size="small" content={run.title} style={{display: 'inline'}} />
+                                <Header size="small" content={run.name} style={{display: 'inline'}} />
                                 <Button circular color='red' icon='delete' compact size='mini' floated='right' onClick={(e)=>this.removeRun(run.index, e)}/>
                                 <Button circular color='teal' icon={run.hided ? 'chevron down' : 'chevron up'} compact size='mini' floated='right' onClick={(e)=>this.toggleRun(run.index, e)}/>
                             </Segment>
@@ -305,7 +305,7 @@ export default class Runs extends Component {
                                 <Segment>
                                     <Grid>
                                         <Grid.Column stretched width={8}>
-                                            <Input label='Title' labelPosition='left' type="text" placeholder='Run title' value={run.title} onChange={(e)=> {this.changeTitle(run.index, e.target.value)}}/>
+                                            <Input label='Name' labelPosition='left' type="text" placeholder='Run name' value={run.name} onChange={(e)=> {this.changeName(run.index, e.target.value)}}/>
                                         </Grid.Column>
                                         <Grid.Column stretched width={16}>
                                             {run.uploadingError? <Header color='red'>Something went wrong uploading one or more images. Please try again</Header>: null}

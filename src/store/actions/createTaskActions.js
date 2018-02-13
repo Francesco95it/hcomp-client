@@ -11,7 +11,7 @@ export const SET_RUNS = 'SET_RUNS'
 export const SET_COLLABORATORS = 'SET_COLLABORATORS'
 export const SET_TUTORIAL = 'SET_TUTORIAL'
 export const SET_STATUS = 'SET_STATUS'
-export const SET_GENERAL_TITLE = 'SET_GENERAL_TITLE'
+export const SET_GENERAL_NAME = 'SET_GENERAL_NAME'
 export const CREATE_TASK = 'CREATE_TASK'
 export const DELETE_TASK = 'DELETE_TASK'
 
@@ -29,8 +29,8 @@ export function set_general(data) {
     return { type: SET_GENERAL, payload: data};
 }
 
-export function set_general_title(data) {
-    return { type: SET_GENERAL_TITLE, payload: data};
+export function set_general_name(data) {
+    return { type: SET_GENERAL_NAME, payload: data};
 }
 
 export function set_runs(data) {

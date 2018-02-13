@@ -24,7 +24,7 @@ export default class General extends Component {
     constructor(props){
         super(props);
         this.state = {
-            title: props.task.general.title,
+            name: props.task.general.name,
             description: props.task.general.description,
             introduction: props.task.general.introduction,
             avatar: props.task.general.avatar,
@@ -98,9 +98,9 @@ export default class General extends Component {
                 <Grid>
                     <Grid.Column stretched width={10}>
                     <div>
-                        <Header content='Project title' size='small' sub/>
-                        <Input type="text" value={this.state.title} size='small' onChange={(e)=> {this.setState({...this.state, title: e.target.value}); this.props.setGeneralTitle(e.target.value)}} style={this.inputStyle}/>
-                        <p>Set your project title</p>
+                        <Header content='Project name' size='small' sub/>
+                        <Input type="text" value={this.state.name} size='small' onChange={(e)=> {this.setState({...this.state, name: e.target.value}); this.props.setGeneralName(e.target.value)}} style={this.inputStyle}/>
+                        <p>Set your project name</p>
                         <Header content='Description' size='small' sub/>
                         <Input type="text" value={this.state.description}  size='small' onChange={(e)=> this.setState({...this.state, description: e.target.value})} style={this.inputStyle}/>
                         <p>Describe your project in one line</p>

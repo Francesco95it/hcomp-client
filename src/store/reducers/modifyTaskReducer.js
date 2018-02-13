@@ -3,7 +3,7 @@ const taskStructure = {
     created: false,
     error: null,
     general: {
-        title: "No name task",
+        name: "No name task",
         description: "",
         introduction: "",
         avatar: []
@@ -35,8 +35,8 @@ function createTaskState(state = {
         case "SET_GENERAL":
         return {...state, task: {...state.task, general: action.payload}};
 
-        case "SET_GENERAL_TITLE":
-        return {...state, task: {...state.task, general: {title: (action.payload===""? "No name task" : action.payload )}}};
+        case "SET_GENERAL_NAME":
+        return {...state, task: {...state.task, general: {name: (action.payload===""? "No name task" : action.payload )}}};
 
         case "SET_RUNS":
         return {...state, task:{...state.task, runs: action.payload}};

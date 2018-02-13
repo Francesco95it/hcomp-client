@@ -5,7 +5,7 @@ import {Redirect} from 'react-router-dom'
 import {Segment, Grid} from 'semantic-ui-react'
 import axios from 'axios'
 
-import { set_general, set_general_title, set_runs, set_collaborators, fetch_users, set_tutorial, set_status, delete_task, upload_task} from '../../store/actions/modifyTaskActions'
+import { set_general, set_general_name, set_runs, set_collaborators, fetch_users, set_tutorial, set_status, delete_task, upload_task} from '../../store/actions/modifyTaskActions'
 
 import VerticalMenu from './VerticalMenu'
 import General from './Pages/General'
@@ -48,7 +48,7 @@ class CreateTask extends Component {
                 this.props.setRuns(res.data.map(run => {
                     return {
                         id: run.id,
-                        title: (run.name || "Untitled run"),
+                        name: run.name,
                         description: run.description,
                         introduction: run.introduction,
                         images: run.images,
@@ -123,7 +123,7 @@ class CreateTask extends Component {
         if(this.props.task.error) return <Segment style={{minHeight: '200px'}} content='Something went wrong. Please try again later.'/>
         return (
             <div>
-                <h2 style={this.h1Style}>Project #{this.props.task.id}: {this.props.task.general.title}</h2>
+                <h2 style={this.h1Style}>Project #{this.props.task.id}: {this.props.task.general.name}</h2>
                 <Grid style={{marginTop:'0px'}}>
 
                     <Grid.Column stretched width={12}>
@@ -153,7 +153,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch){
     return {
         setGeneral: (general) => dispatch(set_general(general)),
-        setGeneralTitle: (title) => dispatch(set_general_title(title)),
+        setGeneralName: (name) => dispatch(set_general_name(name)),
         setRuns: (runs) => dispatch(set_runs(runs)),
         setCollaborators: (collaborators) => dispatch(set_collaborators(collaborators)),
         setStatus: (status) => dispatch(set_status(status)),
