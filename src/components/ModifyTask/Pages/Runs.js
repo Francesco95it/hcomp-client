@@ -198,14 +198,29 @@ export default class Runs extends Component {
     }
 
     onDrop(index, files){
-        let runsCopy = this.state.runs;
-        runsCopy[index].images = files.map(file => { return {image: file, uploading: true}});
-        runsCopy[index].uploadingError = false;
-        this.setState({
-            ...this.state,
-            runs: runsCopy
+        axios.patch('/tasks/runs/'+this.state.runs[index].id, {deleteAll: true})
+        .then(res=>{
+            let runsCopy = this.state.runs;
+            runsCopy[index].images = [];
+            this.setState({
+                ...this.state,
+                runs: runsCopy
+            });
+            runsCopy[index].images = files.map(file => { return {image: file, uploading: true}});
+            runsCopy[index].uploadingError = false;
+            this.setState({
+                ...this.state,
+                runs: runsCopy
+            });
+            this.uploadImage(index, files.length-1);
+        })
+        .catch(err => {
+            console.log("Error deleting images: ",err);
+            // this.setState({
+            //     ...this.state,
+            //     error: err,
+            // });
         });
-        this.uploadImage(index, files.length-1);
     }
 
     removeFile(index, imgindex, e) {
@@ -226,10 +241,10 @@ export default class Runs extends Component {
         })
         .catch(err => {
             console.log("Error deleting image: ",err);
-            this.setState({
-                ...this.state,
-                error: err,
-            });
+            // this.setState({
+            //     ...this.state,
+            //     error: err,
+            // });
         });
     }
 
@@ -245,10 +260,10 @@ export default class Runs extends Component {
         })
         .catch(err => {
             console.log("Error deleting images: ",err);
-            this.setState({
-                ...this.state,
-                error: err,
-            });
+            // this.setState({
+            //     ...this.state,
+            //     error: err,
+            // });
         });
     }
 
@@ -283,7 +298,7 @@ export default class Runs extends Component {
                                     <Dimmer active>
                                         <Loader indeterminate>Uploading</Loader>
                                     </Dimmer>:null}
-                                    <UpImage indexes={indexes} src={image.image.preview} delete={this.removeFile} />
+                                    <UpImage indexes={indexes} src={image.image?image.image.preview:image.url} delete={this.removeFile} />
                                 </Segment>
                             )
                         });
