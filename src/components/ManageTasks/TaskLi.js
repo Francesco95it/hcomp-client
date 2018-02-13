@@ -24,7 +24,7 @@ export default class TaskLi extends Component {
     render(){
         if(this.state.edit) return <Redirect to='editTask' push />
         return  <List.Item>
-                    <Image avatar src={this.props.task.avatar_image} />
+                    <Image avatar style={{objectFit: 'cover'}} src={this.props.task.avatar_image} />
                     <List.Content>
                         <List.Header>
                             {this.props.task.name}
