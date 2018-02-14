@@ -9,6 +9,7 @@ import Login from './components/Login/Login.js';
 import Profile from './components/Profile/Profile.js';
 import AuthWriter from './components/AuthCheck/AuthWriter.js';
 import Navbar from './components/Navbar/Navbar.js';
+import TaskPage from './components/Task/TaskPage.js';
 import SearchTasks from './components/SearchTasks/SearchTasks.js';
 import CreateTask from './components/CreateTask/CreateTask.js';
 import ModifyTask from './components/ModifyTask/ModifyTask.js';
@@ -36,6 +37,7 @@ ReactDOM.render(
                         <Route exact path='/profile' component={Profile} timestamp={new Date().getTime()} />
                         <Route path='/profile/:id' component={Profile} timestamp={new Date().getTime()} />
                         <Route path='/searchTasks' component={SearchTasks} timestamp={new Date().getTime()} />
+                        <Route path='/task/:id' component={TaskPage} timestamp={new Date().getTime()} />
                     </AuthWriter>
                     <Route path='*' component={NotFound} />
                 </Switch>

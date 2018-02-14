@@ -15,8 +15,6 @@ class AuthWriter extends React.Component {
     }
 
     componentWillReceiveProps(){
-        console.log("NEW PROPS!!");
-        console.log(this.props);
         this.forceUpdate();
     }
 
@@ -38,8 +36,8 @@ class AuthWriter extends React.Component {
                     if(session.user.id){
                         if (this.props.location.pathname.match(/[/]profile.*/)) return this.props.children;
                         if (this.props.location.pathname.match(/[/]search.*/)) return this.props.children;
+                        if (this.props.location.pathname.match(/[/]task.*/)) return this.props.children;
                         if (session.user.isWriter) {
-                            console.log(session);
                             return this.props.children;
                         } else {
                             return <Redirect to={this.props.back} />
