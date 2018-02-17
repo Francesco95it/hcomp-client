@@ -14,10 +14,10 @@ class MainHeader extends Component {
 
     divStyle = {
         backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        paddingTop: '140px',
-        paddingBottom: '200px',
-        paddingLeft: '20px',
-        paddingRight: '20px',
+        paddingTop: '6em',
+        paddingBottom: '6em',
+        paddingLeft: '1em',
+        paddingRight: '1em',
     }
 
     render(){

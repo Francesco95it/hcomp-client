@@ -56,7 +56,7 @@ class Navbar extends Component {
             </Menu.Item>
             <Menu.Item name='home' id='whitePls' as={Link} to='/' />
             {this.props.session.authenticated? <Menu.Item name='search' id='whitePls' as={Link} to='/searchTasks' /> : null}
-            <Menu.Menu position='right'>
+            <Menu.Menu position='right' style={{marginRight: '10px'}}>
                 {loginButton}
             </Menu.Menu>
         </Menu>)

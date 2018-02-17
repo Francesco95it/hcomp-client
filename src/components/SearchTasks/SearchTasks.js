@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {Segment, List, Header, Grid, Container} from 'semantic-ui-react'
 import axios from 'axios'
 
-import TaskItem from './TaskItem'
+import TaskItem from '../TaskItem/TaskItem'
 
 class SearchTasks extends Component {
 
