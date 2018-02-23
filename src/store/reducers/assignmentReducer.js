@@ -2,9 +2,9 @@
 function createTaskState(state = {
     assignment: {
         answers: [],
-        id: null
+        id: false
     },
-    runData: [],
+    runData: false,
     uploading: false,
     uploaded: false,
     error: false
@@ -12,11 +12,28 @@ function createTaskState(state = {
 
     switch (action.type) {
 
+        case 'ADD_ANSWER':
+        return {...state, assignment: {...state.assignment, answers: [state.assignment.answers, action.payload]}}
+
         case "CREATE_ASSIGNMENT_PENDING":
-        return {...state};
+        return {
+                assignment: {
+                    answers: [],
+                    id: false,
+                },
+                runData: false,
+                updloading: false,
+                uploaded: false,
+                error: false
+            };
 
         case "CREATE_ASSIGNMENT_FULFILLED":
-        return {...state, assignment: {...state.assignment, id: action.payload.data}};
+        return {...state,
+                assignment: {
+                    answers: [],
+                    id: action.payload.data
+                }
+            };
 
         case "CREATE_ASSIGNMENT_REJECTED":
         return {...state, error: true};
@@ -29,6 +46,15 @@ function createTaskState(state = {
 
         case "FETCH_RUN_REJECTED":
         return {...state, error: true};
+
+        case "SAVE_ASSIGNMENT_PENDING":
+        return {...state, uploading: true};
+
+        case "SAVE_ASSIGNMENT_FULFILLED":
+        return {...state, uploaded: true, uploading: false };
+
+        case "SAVE_ASSIGNMENT_REJECTED":
+        return {...state, error: true, uploading: false};
 
         default:
         return state

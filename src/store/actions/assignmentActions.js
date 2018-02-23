@@ -6,6 +6,8 @@ import axios from 'axios'
 
 export const CREATE_ASSIGNMENT = 'CREATE_ASSIGNMENT'
 export const FETCH_RUN = 'FETCH_RUN'
+export const ADD_ANSWER = 'ADD_ANSWER'
+export const SAVE_ASSIGNMENT = 'SAVE_ASSIGNMENT'
 
 /*
 * other constants
@@ -16,8 +18,17 @@ export const FETCH_RUN = 'FETCH_RUN'
 * action creators
 */
 
+export function add_answer(answer){
+    return { type: ADD_ANSWER, payload: answer}
+}
+
+export function save_assignment(id, answers){
+    return { type: SAVE_ASSIGNMENT, payload: axios.put(`/tasks/runs/assignment/${id}`, {answers: answers})}
+}
+
 export function fetch_run(id){
-    return { type: FETCH_RUN, payload: axios.get(`/tasks/runs?filter=id_task&parameter=${id}`)}
+    console.log(id);
+    return { type: FETCH_RUN, payload: axios.get(`/tasks/runs/${id}`)}
 }
 
 export function create_assignment(ids){
