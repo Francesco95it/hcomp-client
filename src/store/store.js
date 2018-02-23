@@ -6,6 +6,7 @@ import promise from 'redux-promise-middleware'
 import userState from './reducers/userReducer'
 import createTaskState from './reducers/createTaskReducer'
 import modifyTaskState from './reducers/modifyTaskReducer'
+import assignmentReducer from './reducers/assignmentReducer'
 
 import axios from 'axios'
 
@@ -15,6 +16,7 @@ const reducers = combineReducers({
     user: userState,
     createTask: createTaskState,
     modifyTask: modifyTaskState,
+    assignment: assignmentReducer,
     session: sessionReducer
 })
 

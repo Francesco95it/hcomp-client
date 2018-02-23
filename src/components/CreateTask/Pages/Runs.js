@@ -54,7 +54,7 @@ export default class Runs extends Component {
 
     addRun(){
         this.setState({...this.state, loader: true});
-        axios.post('/tasks/runs', {id_task: this.props.task.id, id_runtype: '2'})
+        axios.post('/tasks/runs', {id_task: this.props.task.id, id_runtype: '7'})
         .then( (res) => {
             this.setState({
                 ...this.state,
@@ -68,7 +68,7 @@ export default class Runs extends Component {
                     uploadingError: false,
                     type: {
                         question: "",
-                        type: 2
+                        type: 7
                     },
                     index: this.state.runs.length,
                     hided: false
@@ -331,16 +331,16 @@ export default class Runs extends Component {
                                                     <Radio
                                                         label='Yes/No'
                                                         name='radioGroup'
-                                                        checked={run.type.type === 2}
-                                                        onChange={(e)=> {this.changeType(run.index, run.type.question, 2)}}
+                                                        checked={run.type.type === 7}
+                                                        onChange={(e)=> {this.changeType(run.index, run.type.question, 7)}}
                                                     />
                                                 </Form.Field>
                                                 <Form.Field>
                                                     <Radio
-                                                        label='Other'
+                                                        label='Geneva Emotion Wheel'
                                                         name='radioGroup'
-                                                        checked={run.type.type === 3}
-                                                        onChange={(e)=> {this.changeType(run.index, run.type.question, 3)}}
+                                                        checked={run.type.type === 8}
+                                                        onChange={(e)=> {this.changeType(run.index, run.type.question, 8)}}
                                                     />
                                                 </Form.Field>
                                             </Form>

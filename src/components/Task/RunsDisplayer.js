@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {Link} from 'react-router-dom'
 
 import {Loader, Card, Button} from 'semantic-ui-react'
 
@@ -12,7 +13,7 @@ export default class RunsDisplayer extends Component {
                 header: run.name,
                 meta: run.description,
                 description: run.introduction,
-                extra: <Button name={run.id} color='green' floated='right' size='mini' content='Start!' icon='right arrow' labelPosition='right' onClick={(e) => console.log(e.target.name)} />,
+                extra: <Button name={run.id} as={Link} to={`/assignment/${run.id}`} color='green' floated='right' size='mini' content='Start!' icon='right arrow' labelPosition='right' />,
                 fluid: true,
             }
         })

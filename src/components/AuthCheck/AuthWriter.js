@@ -37,6 +37,7 @@ class AuthWriter extends React.Component {
                         if (this.props.location.pathname.match(/[/]profile.*/)) return this.props.children;
                         if (this.props.location.pathname.match(/[/]search.*/)) return this.props.children;
                         if (this.props.location.pathname.match(/[/]task.*/)) return this.props.children;
+                        if (this.props.location.pathname.match(/[/]assignment.*/)) return this.props.children;
                         if (session.user.isWriter) {
                             return this.props.children;
                         } else {

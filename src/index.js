@@ -14,6 +14,7 @@ import SearchTasks from './components/SearchTasks/SearchTasks.js';
 import CreateTask from './components/CreateTask/CreateTask.js';
 import ModifyTask from './components/ModifyTask/ModifyTask.js';
 import ManageTasks from './components/ManageTasks/ManageTasks.js';
+import Assignment from './components/Assignment/Assignment.js';
 import NotFound from './components/NotFound/NotFound.js';
 
 
@@ -31,12 +32,13 @@ ReactDOM.render(
                     <Route exact path='/' component={Homepage} />
                     <Route path='/login' component={Login} />
                     <AuthWriter back='/'>
-                        <Route path='/createTask' component={CreateTask} />
+                        <Route path='/createTask' component={CreateTask} timestamp={new Date().getTime()} />
                         <Route path='/manageTasks' component={ManageTasks} />
                         <Route path='/editTask' component={ModifyTask} />
                         <Route exact path='/profile' component={Profile} timestamp={new Date().getTime()} />
                         <Route path='/profile/:id' component={Profile} timestamp={new Date().getTime()} />
                         <Route path='/searchTasks' component={SearchTasks} timestamp={new Date().getTime()} />
+                        <Route path='/assignment/:id' component={Assignment} timestamp={new Date().getTime()} />
                         <Route path='/task/:id' component={TaskPage} timestamp={new Date().getTime()} />
                     </AuthWriter>
                     <Route path='*' component={NotFound} />
