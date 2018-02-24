@@ -13,7 +13,7 @@ function createTaskState(state = {
     switch (action.type) {
 
         case 'ADD_ANSWER':
-        return {...state, assignment: {...state.assignment, answers: [state.assignment.answers, action.payload]}}
+        return {...state, assignment: {...state.assignment, answers: [...state.assignment.answers, action.payload]}}
 
         case "CREATE_ASSIGNMENT_PENDING":
         return {

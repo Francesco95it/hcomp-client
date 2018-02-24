@@ -47,7 +47,7 @@ class Assignment extends Component {
     }
 
     onSave(exit = false){
-        this.props.saveAssignment(this.props.assignment.assignment.id);
+        this.props.saveAssignment(this.props.assignment.assignment.id, this.props.assignment.assignment.answers);
         if(exit) setTimeout(()=>{
             this.setState({
                 ...this.state,
@@ -106,7 +106,7 @@ function mapDispatchToProps(dispatch){
         createAssignment: (id) => dispatch(create_assignment(id)),
         fetchRun: (id_run) => dispatch(fetch_run(id_run)),
         addAnswer: (answer) => dispatch(add_answer(answer)),
-        saveAssignment: (id) => dispatch(save_assignment(id)),
+        saveAssignment: (id, answers) => dispatch(save_assignment(id, answers)),
     }
 }
 

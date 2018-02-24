@@ -23,7 +23,8 @@ export function add_answer(answer){
 }
 
 export function save_assignment(id, answers){
-    return { type: SAVE_ASSIGNMENT, payload: axios.put(`/tasks/runs/assignment/${id}`, {answers: answers})}
+    console.log("ANSWERS: ", answers);
+    return { type: SAVE_ASSIGNMENT, payload: axios.put(`/tasks/runs/assignments/${id}`, {answers: answers})}
 }
 
 export function fetch_run(id){

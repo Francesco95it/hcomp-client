@@ -31,15 +31,15 @@ ReactDOM.render(
                 <Switch>
                     <Route exact path='/' component={Homepage} />
                     <Route path='/login' component={Login} />
+                    <Route path='/searchTasks' component={SearchTasks} timestamp={new Date().getTime()} />
+                    <Route path='/task/:id' component={TaskPage} timestamp={new Date().getTime()} />
                     <AuthWriter back='/'>
                         <Route path='/createTask' component={CreateTask} timestamp={new Date().getTime()} />
                         <Route path='/manageTasks' component={ManageTasks} />
                         <Route path='/editTask' component={ModifyTask} />
                         <Route exact path='/profile' component={Profile} timestamp={new Date().getTime()} />
                         <Route path='/profile/:id' component={Profile} timestamp={new Date().getTime()} />
-                        <Route path='/searchTasks' component={SearchTasks} timestamp={new Date().getTime()} />
                         <Route path='/assignment/:id' component={Assignment} timestamp={new Date().getTime()} />
-                        <Route path='/task/:id' component={TaskPage} timestamp={new Date().getTime()} />
                     </AuthWriter>
                     <Route path='*' component={NotFound} />
                 </Switch>

@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {sessionService} from 'redux-react-session'
 
 import axios from 'axios'
 import {Container, Header, Segment, Grid, Image} from 'semantic-ui-react'
@@ -11,47 +12,63 @@ export default class TaskPage extends Component {
         super(props);
         this.state = {
             task: null,
+            error: false,
             runs: null,
+            runsError: false,
             creator: null,
+            userError: false,
             taskFetched: false,
-            error: false
         }
     }
 
     componentDidMount(){
-        console.log(this.props.match.params.id);
-        axios.get(`/tasks/${this.props.match.params.id}`)
-        .then( res => {
-            this.setState({
-                ...this.state,
-                task: res.data,
-                taskFetched: true,
-                error: false,
-            });
-            axios.get(`/users/${res.data.id_creator}`)
-            .then(res => {
+        sessionService.loadUser()
+        .then(()=>{
+            axios.get(`/tasks/${this.props.match.params.id}`)
+            .then( res => {
                 this.setState({
                     ...this.state,
-                    creator: res.data.name
+                    task: res.data,
+                    taskFetched: true,
+                    error: false,
+                });
+                axios.get(`/users/${res.data.id_creator}`)
+                .then(res => {
+                    this.setState({
+                        ...this.state,
+                        creator: res.data.name
+                    })
+                })
+                .catch(err => {
+                    console.log(err);
+                    this.setState({
+                        ...this.setState({
+                            ...this.state,
+                            userError: true
+                        })
+                    })
+                });
+                axios.get(`/tasks/runs?filter=id_task&parameter=${res.data.id}`)
+                .then(res => {
+                    this.setState({
+                        ...this.state,
+                        runs: res.data
+                    })
+                })
+                .catch(err => {
+                    this.setState({
+                        ...this.state,
+                        runsError: true
+                    })
                 })
             })
-            .catch(err => {
+            .catch( err => {
                 console.log(err);
-            });
-            axios.get(`/tasks/runs?filter=id_task&parameter=${res.data.id}`)
-            .then(res => {
                 this.setState({
                     ...this.state,
-                    runs: res.data
+                    taskFetched: false,
+                    error: true
                 })
-            })
-        })
-        .catch( err => {
-            console.log(err);
-            this.setState({
-                ...this.state,
-                taskFetched: false,
-                error: true
             })
         })
     }
@@ -71,7 +88,7 @@ export default class TaskPage extends Component {
                             </Grid.Column>
                             <Grid.Column width={4}>
                             <Image size='small' rounded centered bordered src={this.state.task.avatar_image} />
-                            <Header size='tiny' textAlign='center'>Task created by {this.state.creator}</Header>
+                            {!this.state.userError? <Header size='tiny' textAlign='center'>Task created by {this.state.creator}</Header> : null}
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>
@@ -81,7 +98,7 @@ export default class TaskPage extends Component {
                         </Grid.Row>
                         <Grid.Row>
                             <Grid.Column width={16}>
-                                <RunsDisplayer runs={this.state.runs} />
+                                {axios.defaults.headers.common['Authorization'] !== '' ? <RunsDisplayer runs={this.state.runs} runsError={this.state.runsError} /> : <Header color='teal' size='small'>Login to view available runs!</Header> }
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>

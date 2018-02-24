@@ -55,7 +55,7 @@ class Navbar extends Component {
                 <h3>Social Human Computation</h3>
             </Menu.Item>
             <Menu.Item name='home' id='whitePls' as={Link} to='/' />
-            {this.props.session.authenticated? <Menu.Item name='search' id='whitePls' as={Link} to='/searchTasks' /> : null}
+            <Menu.Item name='projects' id='whitePls' as={Link} to='/searchTasks' />
             <Menu.Menu position='right' style={{marginRight: '10px'}}>
                 {loginButton}
             </Menu.Menu>

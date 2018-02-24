@@ -1,13 +1,13 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 
-import {Loader, Card, Button} from 'semantic-ui-react'
+import {Loader, Card, Button, Header} from 'semantic-ui-react'
 
 export default class RunsDisplayer extends Component {
 
     render(){
         if (!this.props.runs) return (<Loader active inline='centered' />);
-
+        if (this.props.runsError) return <Header color='red' size='small'>Error loading runs</Header>;
         const items = this.props.runs.map(run => {
             return {
                 header: run.name,
