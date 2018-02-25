@@ -14,7 +14,8 @@ class Assignment extends Component {
         this.state = {
             imgNumber: 0,
             position: 0,
-            redirect: false
+            redirect: false,
+            isCompleted: false,
         }
         this.onDone = this.onDone.bind(this);
         this.onSave = this.onSave.bind(this);
@@ -39,6 +40,10 @@ class Assignment extends Component {
                 position: this.state.position+1
             })
         } else {
+            this.setState({
+                ...this.state,
+                isCompleted: true
+            })
             setTimeout(()=>{
                 this.onSave();
             }, 1000);
@@ -47,7 +52,7 @@ class Assignment extends Component {
     }
 
     onSave(exit = false){
-        this.props.saveAssignment(this.props.assignment.assignment.id, this.props.assignment.assignment.answers);
+        this.props.saveAssignment(this.props.assignment.assignment.id, this.props.assignment.assignment.answers, this.state.isCompleted);
         if(exit) setTimeout(()=>{
             this.setState({
                 ...this.state,
@@ -106,7 +111,7 @@ function mapDispatchToProps(dispatch){
         createAssignment: (id) => dispatch(create_assignment(id)),
         fetchRun: (id_run) => dispatch(fetch_run(id_run)),
         addAnswer: (answer) => dispatch(add_answer(answer)),
-        saveAssignment: (id, answers) => dispatch(save_assignment(id, answers)),
+        saveAssignment: (id, answers, isCompleted) => dispatch(save_assignment(id, answers, isCompleted)),
     }
 }
 

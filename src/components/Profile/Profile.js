@@ -2,10 +2,14 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import { sessionService } from 'redux-react-session'
 
-import { fetch_user } from '../../store/actions/userActions'
-
 import {Segment, Image, Button} from 'semantic-ui-react'
 import moment from 'moment'
+import axios from 'axios'
+
+import TasksDone from './TasksDone'
+import TasksInProgress from './TasksInProgress'
+import { fetch_user } from '../../store/actions/userActions'
+
 
 class Profile extends Component {
 
@@ -24,12 +28,18 @@ class Profile extends Component {
     constructor(props){
         super(props);
         this.state = {
-            personalProfile: true
+            personalProfile: true,
+            assignments: [],
+            assignmentsFetched: false,
+            assignmentError: false,
         }
     }
 
     componentWillMount(){
         // console.log(this.props.match.params.id);
+    }
+
+    componentDidMount(){
         sessionService.loadUser().then(()=>{
             if(this.props.match.params.id) {
                 this.setState({
@@ -37,6 +47,23 @@ class Profile extends Component {
                     personalProfile: false
                 });
                 this.props.dispatch(fetch_user(this.props.match.params.id));
+            } else {
+                axios.get(`/tasks/runs/assignments?filter=worker&parameter=${this.props.session.user.id}`)
+                .then((res)=>{
+                    console.log(res);
+                    this.setState({
+                        ...this.state,
+                        assignments: res.data,
+                        assignmentsFetched: true
+                    })
+                })
+                .catch((err)=>{
+                    console.log(err);
+                    this.setState({
+                        ...this.state,
+                        assignmentError: true
+                    })
+                })
             }
         })
     }
@@ -49,8 +76,10 @@ class Profile extends Component {
                 <Image src={user.imageURL} floated='right' width='100px' style={{marginTop: '15px'}}/>
                 <h1 style={{marginTop: '10px'}}>{user.name}</h1>
                 <h4>Email: {user.email} <Button compact size='mini' style={{marginLeft: '10px'}}>Change</Button></h4>
-                <h2>Statistics:</h2>
-                <p>One day we will return some stats</p>
+                <h2>Tasks in progress:</h2>
+                <TasksInProgress {...this.state} />
+                <h2>Tasks completed:</h2>
+                <TasksDone {...this.state} />
                 </Segment>
             );
         }
@@ -82,7 +111,7 @@ class Profile extends Component {
 function mapStateToProps(state) {
     return {
         session: state.session,
-        user: state.user,
+        user: state.user
     };
 }
 

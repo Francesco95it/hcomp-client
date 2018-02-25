@@ -9,11 +9,14 @@ export default class RunsDisplayer extends Component {
         if (!this.props.runs) return (<Loader active inline='centered' />);
         if (this.props.runsError) return <Header color='red' size='small'>Error loading runs</Header>;
         const items = this.props.runs.map(run => {
+            console.log(run);
+            let extra = <Button name={run.id} as={Link} to={`/assignment/${run.id}`} color='green' floated='right' size='mini' content='Start!' icon='right arrow' labelPosition='right' />;
+            if (!this.props.authenticated) extra = <Button name={run.id} as={Link} to={`/login?redirect=task&id=${run.id_task}`} color='green' floated='right' size='mini' content='Login and start!' icon='right arrow' labelPosition='right' />
             return {
                 header: run.name,
                 meta: run.description,
                 description: run.introduction,
-                extra: <Button name={run.id} as={Link} to={`/assignment/${run.id}`} color='green' floated='right' size='mini' content='Start!' icon='right arrow' labelPosition='right' />,
+                extra: extra,
                 fluid: true,
             }
         })

@@ -24,11 +24,27 @@ class Login extends Component {
         this.state = {
             isWriter: false,
             loginError: false,
-            loginSuccess: false
+            loginSuccess: false,
+            redirect: ""
         };
         this.setWriter = this.setWriter.bind(this);
         this.responseFacebook = this.responseFacebook.bind(this);
         this.responseGoogle = this.responseGoogle.bind(this);
+    }
+
+    componentDidMount(){
+        // console.log(this.props.location.search);
+        const params = new URLSearchParams(this.props.location.search);
+        switch (params.get('redirect')) {
+            case 'task':
+                this.setState({
+                    ...this.state,
+                    redirect: `/task/${params.get('id')}`
+                })
+                break;
+            default:
+                break;
+        }
     }
 
     setWriter(){
@@ -83,7 +99,10 @@ class Login extends Component {
     render(){
         let loginErr;
         if(this.state.loginError) loginErr=<h4 className="error">Something went wrong. Please login again.</h4>
-        if(this.props.session.authenticated) return <Redirect to='/' />
+        if(this.props.session.authenticated) {
+            if(this.state.redirect !== "") return <Redirect to={this.state.redirect} />
+            return <Redirect to='/' />
+        }
         return (
             <Segment textAlign='center' style={this.segmentStyle}>
                 <ModalLogin loginSuccess={this.state.loginSuccess} error={this.props.session.user.error}/>
@@ -117,8 +136,7 @@ class Login extends Component {
 
 function mapStateToProps(state) {
     return {
-        session: state.session,
-        user: state.user,
+        session: state.session
     };
 }
 
