@@ -34,7 +34,6 @@ class Homepage extends Component {
         .then(res => {
             console.log(res);
             let data = res.data;
-            if (!res.data.isArray()) data = [res.data];
             this.setState({
                 ...this.state,
                 recentTasksByAssignments: data,
