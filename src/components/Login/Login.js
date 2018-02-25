@@ -33,7 +33,6 @@ class Login extends Component {
     }
 
     componentDidMount(){
-        // console.log(this.props.location.search);
         const params = new URLSearchParams(this.props.location.search);
         switch (params.get('redirect')) {
             case 'task':

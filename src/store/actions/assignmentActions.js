@@ -32,7 +32,7 @@ export function fetch_run(id){
 }
 
 export function create_assignment(ids){
-    return { type: CREATE_ASSIGNMENT, payload: axios.post(`/tasks/runs/assignments`, {id_run: ids.run, id_worker:ids.worker},{
+    return { type: CREATE_ASSIGNMENT, payload: axios.post(`/tasks/runs/assignments`, {id_run: ids.run, id_worker:ids.worker, id_task: ids.task},{
         headers: {
             'Content-Type': 'application/json',
         }

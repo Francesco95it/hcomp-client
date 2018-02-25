@@ -39,7 +39,7 @@ ReactDOM.render(
                         <Route path='/editTask' component={ModifyTask} />
                         <Route exact path='/profile' component={Profile} timestamp={new Date().getTime()} />
                         <Route path='/profile/:id' component={Profile} timestamp={new Date().getTime()} />
-                        <Route path='/assignment/:id' component={Assignment} timestamp={new Date().getTime()} />
+                        <Route path='/assignment' component={Assignment} timestamp={new Date().getTime()} />
                     </AuthWriter>
                     <Route path='*' component={NotFound} />
                 </Switch>
