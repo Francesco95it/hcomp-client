@@ -28,6 +28,7 @@ export function on_continue(){
 }
 
 export function save_assignment(id, answers, isCompleted){
+    console.log(isCompleted);
     return { type: SAVE_ASSIGNMENT, payload: axios.put(`/tasks/runs/assignments/${id}`, {answers: answers, is_completed: isCompleted})}
 }
 

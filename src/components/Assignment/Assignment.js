@@ -101,7 +101,7 @@ class Assignment extends Component {
                 <Segment>
                     <Image src={happyImage} size='small' floated='right' />
                     <Header color='green' content='Thank you! Your work has been saved.' />
-                    {this.state.willExit && this.state.isCompleted ?null:
+                    {(this.state.willExit || this.state.isCompleted) ?null:
                         <div>
                             <br />
                             <Header content='Now you can' size='small' />
