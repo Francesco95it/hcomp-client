@@ -15,6 +15,9 @@ function createTaskState(state = {
         case 'ADD_ANSWER':
         return {...state, assignment: {...state.assignment, answers: [...state.assignment.answers, action.payload]}}
 
+        case 'CONTINUE':
+        return {...state, uploaded: false}
+
         case "CREATE_ASSIGNMENT_PENDING":
         return {
                 assignment: {

@@ -28,7 +28,7 @@ class MainHeader extends Component {
                 <div style={this.divStyle}>
                     <Icon name='home' size='massive' />
                     <h1>Welcome {this.props.session.user.name}.</h1>
-                    <h4 style={{marginTop: '5px'}}>Your friends news will be displayed here</h4>
+                    <h4 style={{marginTop: '5px'}}>Your friend Carlo completed <a href='#'>Science Scribbler</a> task 1 hour ago!</h4>
                     <Button basic animated color='yellow' size='big' as={Link} to="/profile">
                         <Button.Content visible>Go to your profile</Button.Content>
                         <Button.Content hidden>

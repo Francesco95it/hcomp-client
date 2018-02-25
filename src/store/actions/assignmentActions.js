@@ -8,6 +8,7 @@ export const CREATE_ASSIGNMENT = 'CREATE_ASSIGNMENT'
 export const FETCH_RUN = 'FETCH_RUN'
 export const ADD_ANSWER = 'ADD_ANSWER'
 export const SAVE_ASSIGNMENT = 'SAVE_ASSIGNMENT'
+export const CONTINUE = 'CONTINUE'
 
 /*
 * other constants
@@ -20,6 +21,10 @@ export const SAVE_ASSIGNMENT = 'SAVE_ASSIGNMENT'
 
 export function add_answer(answer){
     return { type: ADD_ANSWER, payload: answer}
+}
+
+export function on_continue(){
+    return { type: CONTINUE }
 }
 
 export function save_assignment(id, answers, isCompleted){

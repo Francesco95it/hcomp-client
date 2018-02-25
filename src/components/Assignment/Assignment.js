@@ -1,10 +1,11 @@
 import React, {Component} from 'react'
-import {Redirect} from 'react-router-dom'
+import {Redirect, Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 
-import {Container, Segment, Loader, Header} from 'semantic-ui-react'
+import {Container, Segment, Loader, Header, Button, Image} from 'semantic-ui-react'
 
-import { create_assignment, fetch_run, add_answer, save_assignment } from '../../store/actions/assignmentActions'
+import { create_assignment, fetch_run, add_answer, save_assignment, on_continue } from '../../store/actions/assignmentActions'
+import happyImage from './happy.svg'
 import Answer from './Answer'
 
 class Assignment extends Component {
@@ -16,6 +17,7 @@ class Assignment extends Component {
             position: 0,
             redirect: false,
             isCompleted: false,
+            willExit: false,
             error:false,
         }
         this.onDone = this.onDone.bind(this);
@@ -69,12 +71,18 @@ class Assignment extends Component {
 
     onSave(exit = false){
         this.props.saveAssignment(this.props.assignment.assignment.id, this.props.assignment.assignment.answers, this.state.isCompleted);
-        if(exit) setTimeout(()=>{
+        if(exit) {
             this.setState({
                 ...this.state,
-                redirect: true
+                willExit: true
             })
-        }, 3000);
+            setTimeout(()=>{
+                this.setState({
+                    ...this.state,
+                    redirect: true
+                })
+            }, 3000);
+        }
     }
 
     render(){
@@ -91,11 +99,20 @@ class Assignment extends Component {
         if (this.props.assignment.uploaded) return (
             <Container>
                 <Segment>
+                    <Image src={happyImage} size='small' floated='right' />
                     <Header color='green' content='Thank you! Your work has been saved.' />
+                    {this.state.willExit?null:
+                        <div>
+                            <br />
+                            <Header content='Now you can' size='small' />
+                            <Button content='Go back to homepage' color='instagram' as={Link} to='/' />
+                            <Button content='Continue with this task' color='green' onClick={() => this.props.onContinue()} />
+                        </div>
+                    }
                 </Segment>
             </Container>
         )
-        
+
         const runData = this.props.assignment.runData;
         const percent = isNaN((this.state.position+1)*100/this.state.imgNumber-1) ? 0 : (this.state.position+1)*100/this.state.imgNumber-1;
         return (
@@ -129,6 +146,7 @@ function mapDispatchToProps(dispatch){
         fetchRun: (id_run) => dispatch(fetch_run(id_run)),
         addAnswer: (answer) => dispatch(add_answer(answer)),
         saveAssignment: (id, answers, isCompleted) => dispatch(save_assignment(id, answers, isCompleted)),
+        onContinue: () => dispatch(on_continue())
     }
 }
 
