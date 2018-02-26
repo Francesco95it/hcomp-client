@@ -1,3 +1,5 @@
+console.log(document.getElementById('#drawer'+window.connectScript));
+if(window.loaded) window.loaded=true;
 Plutchik({
     element: '#drawer'+window.connectScript,
     labels: [
@@ -10,3 +12,6 @@ Plutchik({
     window.elemData = data;
     console.log('Clicked ', data);
 })
+setTimeout(() => {
+    document.getElementById(window.connectScript).remove();
+}, 1000)

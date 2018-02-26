@@ -11,8 +11,10 @@ export default class Answer extends Component {
         this.state = {
             answer: null,
             answerChosen: false,
+            wheelLoaded: false,
             loader: false
         }
+        this.wheelLoaded = this.wheelLoaded.bind(this);
     }
 
     componentWillReceiveProps(){
@@ -35,6 +37,13 @@ export default class Answer extends Component {
                 answerChosen:true
             })
         }
+    }
+
+    wheelLoaded(){
+        this.setState({
+            ...this.state,
+            wheelLoaded:true,
+        })
     }
 
     answerChosen(answer){
@@ -70,7 +79,7 @@ export default class Answer extends Component {
     }
 
     render(){
-        
+
         if(this.state.loader) return <Loader active inline='centered' />
         return (
             <Grid>

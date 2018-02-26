@@ -7,7 +7,6 @@ export default class Type extends Component {
 
     constructor(props){
         super(props)
-        console.log("Constructor type");
         this.state = {
             answer: null,
             time: false,
@@ -26,7 +25,7 @@ export default class Type extends Component {
                 ...this.state,
                 time:true
             })
-        }, 1500)
+        }, 500)
     }
 
     changeAnswer(answer){
@@ -37,10 +36,19 @@ export default class Type extends Component {
         this.props.answerChosen(answer);
     }
 
+    reloadScript(){
+        this.setState({
+            ...this.state,
+            plutchLoaded: true
+        })
+        const head = document.getElementsByTagName('head')[0];
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = `${window.location.protocol}//${window.location.host}/renderScript.js`;
+        head.appendChild(script);
+    }
+
     render(){
-        console.log("props: ", this.props);
-        console.log("state: ", this.state);
-        console.log("elem: ", document.getElementById('drawer'+window.connectScript));
         switch (this.props.type) {
             case 7:
             return (
@@ -64,12 +72,12 @@ export default class Type extends Component {
                 </Form>
             )
 
-            case 8:
-            return(
-                <div>
-                    <div id={'drawer'+window.connectScript}></div>
-                    {this.state.time?<Script attributes={{id: window.connectScript}} url={`${window.location.protocol}//${window.location.host}/renderScript.js`} onError={(e)=>{console.log("error render");}} onLoad={(e)=>{console.log("load render");}} onCreate={()=>this.setState({...this.state, plutchCreated: true})}/> : null}
-                </div>)
+            case 8:{
+                if(!this.state.plutchLoaded) this.reloadScript();
+                return(
+                    <div>
+                        <div id={'drawer'+window.connectScript} style={{maxWidth: '90%'}}></div>
+                    </div>)}
 
             default:
 
