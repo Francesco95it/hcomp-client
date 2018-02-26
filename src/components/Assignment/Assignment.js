@@ -6,6 +6,7 @@ import {Container, Segment, Loader, Header, Button, Image} from 'semantic-ui-rea
 
 import { create_assignment, fetch_run, add_answer, save_assignment, on_continue } from '../../store/actions/assignmentActions'
 import happyImage from './happy.svg'
+import TutorialModal from './TutorialModal'
 import Answer from './Answer'
 
 class Assignment extends Component {
@@ -19,12 +20,15 @@ class Assignment extends Component {
             isCompleted: false,
             willExit: false,
             alreadyDone: false,
+            opened: false,
             fetched: false,
             created: false,
             error:false,
         }
         this.onDone = this.onDone.bind(this);
         this.onSave = this.onSave.bind(this);
+        this.handleModalOpen = this.handleModalOpen.bind(this);
+        this.handleModalClose = this.handleModalClose.bind(this);
     }
 
     componentDidMount(){
@@ -48,6 +52,7 @@ class Assignment extends Component {
                 } else {
                     this.setState({
                         ...this.state,
+                        opened: true,
                         created: true
                     })
                 }
@@ -117,6 +122,19 @@ class Assignment extends Component {
         }
     }
 
+    handleModalOpen(){
+        this.setState({
+            ...this.state,
+            opened: true
+        })
+    }
+    handleModalClose(){
+        this.setState({
+            ...this.state,
+            opened: false
+        })
+    }
+
     render(){
         if (this.props.assignment.error || this.state.error) return (
             <Container>
@@ -157,6 +175,7 @@ class Assignment extends Component {
         return (
             <Container>
                 <Segment>
+                    <TutorialModal tutorial={runData.tutorial} open={this.state.opened} handleModalClose={this.handleModalClose} handleModalOpen={this.handleModalOpen} />
                     <Answer
                         image={runData.images[this.state.position]}
                         type={runData.id_runtype}

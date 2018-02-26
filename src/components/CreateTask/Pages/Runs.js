@@ -337,7 +337,7 @@ export default class Runs extends Component {
                                                 </Form.Field>
                                                 <Form.Field>
                                                     <Radio
-                                                        label='Geneva Emotion Wheel'
+                                                        label='Plutchik Emotion Wheel'
                                                         name='radioGroup'
                                                         checked={run.type.type === 8}
                                                         onChange={(e)=> {this.changeType(run.index, run.type.question, 8)}}

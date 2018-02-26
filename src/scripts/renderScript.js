@@ -1,0 +1,3 @@
+Plutchik({
+    element: '#drawer'
+});

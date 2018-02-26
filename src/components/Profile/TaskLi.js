@@ -57,7 +57,7 @@ export default class TaskLi extends Component {
                 <Image avatar src={this.state.task.avatar_image} />
                 <List.Content>
                     <List.Header>{this.state.task.name}, {this.state.run.name}</List.Header>
-                    <List.Description>Completed on {moment(this.props.assignment.updatedAt).format("D/MM/YYYY")}</List.Description>
+                    <List.Description>{this.props.isCompleted? 'Completed' : 'Last updated'} on {moment(this.props.assignment.updatedAt).format("D/MM/YYYY")}</List.Description>
                 </List.Content>
                 {this.props.isCompleted ? null : (
                     <Button as={Link} to={`/assignment?rid=${this.props.runID}&tid=${this.props.taskID}`} color='teal' content='Resume your work!' icon='arrow right' compact size='tiny' floated='right'/>

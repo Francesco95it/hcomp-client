@@ -40,7 +40,10 @@ class Homepage extends Component {
                 fetchedRecentAssignments: true,
             })
         })
-        .catch((err)=>console.log(err))
+        .catch((err)=>console.log(err));
+        // setInterval(()=>{
+        //     if(window.elemData) console.log(window.elemData);
+        // }, 1000)
     }
 
     render(){

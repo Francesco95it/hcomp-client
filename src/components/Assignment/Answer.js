@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 
 import {Grid, Image, Header, Form, Radio, Button, Loader, Progress} from 'semantic-ui-react'
 
+import Type from './Type'
+
 export default class Answer extends Component {
 
     constructor(props){
@@ -15,24 +17,60 @@ export default class Answer extends Component {
 
     componentWillReceiveProps(){
         setTimeout(()=>{
+            let chosen = false;
+            if(this.props.type === 8) chosen = true;
             this.setState({
                 ...this.state,
                 answer: null,
-                answerChosen: false,
+                answerChosen: chosen,
                 loader: false
             })
         }, 500);
     }
 
-    changeAnswer(answer){
+    componentDidMount(){
+        if(this.props.type === 8){
+            this.setState({
+                ...this.state,
+                answerChosen:true
+            })
+        }
+    }
+
+    answerChosen(answer){
         this.setState({
-            ...this.state,
+            answer: answer,
             answerChosen: true,
-            answer: answer
         })
     }
 
+    onNext(){
+        this.setState({...this.state, loader: true});
+        if(this.props.type===8){
+            let founded = false;
+            for(const emo in window.elemData.data) {
+                if(window.elemData.data[emo]) founded=true;
+            }
+            if(founded){
+                this.props.next({
+                    answer: window.elemData.data,
+                    imgname: this.props.image.name
+                });
+            } else {
+                alert('Select at least one emotion');
+                this.setState({...this.state, loader: false});
+            }
+        } else {
+            this.props.next({
+                answer: this.state.answer,
+                imgname: this.props.image.name
+            });
+        }
+
+    }
+
     render(){
+        
         if(this.state.loader) return <Loader active inline='centered' />
         return (
             <Grid>
@@ -50,24 +88,7 @@ export default class Answer extends Component {
                             <Header content={this.props.question} size='medium' style={{marginTop: 0}}/>
                         </Grid.Row>
                         <Grid.Row style={{marginTop: '1em'}}>
-                            <Form>
-                                <Form.Field>
-                                    <Radio
-                                        label='Yes'
-                                        name='radioGroup'
-                                        checked={this.state.answer === 'Yes'}
-                                        onChange={(e)=> {this.changeAnswer('Yes')}}
-                                    />
-                                </Form.Field>
-                                <Form.Field>
-                                    <Radio
-                                        label='No'
-                                        name='radioGroup'
-                                        checked={this.state.answer === 'No'}
-                                        onChange={(e)=> {this.changeAnswer('No')}}
-                                    />
-                                </Form.Field>
-                            </Form>
+                            <Type type={this.props.type} answerChosen={this.answerChosen} percent={this.props.percent}/>
                         </Grid.Row>
                         <Grid.Row style={{position: 'absolute', right: '0', bottom: '0', marginRight: '10px'}}>
                             <Grid.Column width={16}>
@@ -77,13 +98,7 @@ export default class Answer extends Component {
                                 icon={this.props.isLast ? 'checkmark' : 'right arrow'}
                                 labelPosition='right'
                                 color='green'
-                                onClick={()=>{
-                                    this.setState({...this.state, loader: true});
-                                    this.props.next({
-                                        answer: this.state.answer,
-                                        imgname: this.props.image.name
-                                    });
-                                }}/>
+                                onClick={()=>this.onNext()}/>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid.Column>
