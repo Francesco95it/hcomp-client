@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-import {Header, Segment, List, Icon} from 'semantic-ui-react'
+import {Header, Segment, List} from 'semantic-ui-react'
 
 import TaskLi from './TaskLi'
 

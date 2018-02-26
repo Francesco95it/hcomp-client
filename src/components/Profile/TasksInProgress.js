@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-import {List, Header, Segment, Image, Icon} from 'semantic-ui-react'
+import {List, Header, Segment} from 'semantic-ui-react'
 
 import TaskLi from './TaskLi'
 
@@ -12,7 +12,7 @@ export default class TasksInProgress extends Component {
         if(!this.props.assignmentsFetched) return <Segment basic loading style={{minHeight: '200px', marginTop: 0}} />
         if(this.props.assignments.filter(assignment => {return !assignment.is_completed}).length === 0) return <Header color='teal' size='small' content='All tasks you have done are completed!' />
         return (
-            <List>
+            <List divided >
                 {this.props.assignments.filter(assignment => {return !assignment.is_completed}).map(assignment => {
                     console.log(assignment);
                     return (<TaskLi key={assignment.id} taskID={assignment.id_task} runID={assignment.id_run} assignment={assignment} isCompleted={false}/>)

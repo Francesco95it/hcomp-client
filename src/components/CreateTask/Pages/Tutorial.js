@@ -29,10 +29,12 @@ export default class Tutorial extends Component {
     }
 
     removeStep(step){
-        const stepsCopy = this.state.steps;
-        for (var i = 0; i < stepsCopy.length; i++) {
-
+        let stepsCopy = this.state.steps;
+        for (let i=step.index; i<this.state.steps.length-1; i++){
+            stepsCopy[i] = stepsCopy[i+1];
+            stepsCopy[i].index = i;
         }
+        stepsCopy.splice(-1,1);
         this.setState({
             ...this.state,
             steps: stepsCopy
@@ -63,7 +65,10 @@ export default class Tutorial extends Component {
                     this.state.steps.map((step, index) => {
                         return (
                             <div key={index}>
-                                <p style={{marginTop:'10px', marginBottom: '2px'}}>Step {step.index + 1}</p>
+                                <p style={{marginTop:'10px', marginBottom: '2px'}}>
+                                    <Button circular color='red' icon='delete' compact size='mini' floated='right' onClick={(step)=>this.removeStep(step)}/>
+                                    Step {step.index + 1}
+                                </p>
                                 <TextArea autoHeight value={step.text} style={{width: '-webkit-fill-available'}} onChange={(e)=> this.changeText(index, e.target.value)} />
                             </div>
                         )

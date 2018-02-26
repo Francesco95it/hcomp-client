@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 
 import axios from 'axios'
-import {List, Image, Button, Loader, Icon} from 'semantic-ui-react'
+import {List, Image, Button, Loader} from 'semantic-ui-react'
 import moment from 'moment'
 
 export default class TaskLi extends Component {
@@ -50,8 +50,8 @@ export default class TaskLi extends Component {
         if (this.state.error) return <List.Header color='red'>Error retrieving infos for this task.</List.Header>
         if (!this.state.fetched) return <Loader inline='centered' active />
 
-        let percent = 100;
-        if(!this.props.isCompleted) percent = (this.props.assignment.answers.length+1)*100/(this.state.run.images.length-1)
+        // let percent = 100;
+        // if(!this.props.isCompleted) percent = (this.props.assignment.answers.length+1)*100/(this.state.run.images.length-1)
         return (
             <List.Item>
                 <Image avatar src={this.state.task.avatar_image} />
