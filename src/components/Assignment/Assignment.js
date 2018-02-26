@@ -18,6 +18,9 @@ class Assignment extends Component {
             redirect: false,
             isCompleted: false,
             willExit: false,
+            alreadyDone: false,
+            fetched: false,
+            created: false,
             error:false,
         }
         this.onDone = this.onDone.bind(this);
@@ -27,12 +30,41 @@ class Assignment extends Component {
     componentDidMount(){
         const params = new URLSearchParams(this.props.location.search);
         if(params.get('rid') && params.get('tid')){
-            this.props.createAssignment({run: params.get('rid'), worker: this.props.user.id, task: params.get('tid')});
+            this.props.createAssignment({run: params.get('rid'), worker: this.props.user.id, task: params.get('tid')})
+            .then(res => {
+                if(res.value.data.message){
+                    this.setState({
+                        ...this.state,
+                        alreadyDone: true,
+                        created: true
+                    })
+                }
+                if(res.value.data.answers){
+                    this.setState({
+                        ...this.state,
+                        position: res.value.data.answers.length,
+                        created: true
+                    })
+                } else {
+                    this.setState({
+                        ...this.state,
+                        created: true
+                    })
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    ...this.state,
+                    error:true
+                })
+            });
             this.props.fetchRun(params.get('rid'))
             .then(res => {
                 this.setState({
                     ...this.state,
-                    imgNumber: res.value.data.images.length
+                    imgNumber: res.value.data.images.length,
+                    fetched: true
                 });
             })
             .catch(err => {
@@ -94,8 +126,15 @@ class Assignment extends Component {
                 </Segment>
             </Container>
         )
+        if (this.state.alreadyDone) return (
+            <Container>
+                <Segment>
+                    <Header color='green' content='It seems like you already did this! Thank you!' />
+                    <p>You did a very good yob!</p>
+                </Segment>
+            </Container>)
         if (this.state.redirect) return <Redirect to='/' />
-        if (!this.props.assignment.assignment.id || !this.props.assignment.runData || this.props.assignment.uploading) return <Loader active style={{minHeight: '200px', marginTop: 0}} />
+        if (!this.state.created || !this.state.fetched || this.props.assignment.uploading) return <Loader active style={{minHeight: '200px', marginTop: 0}} />
         if (this.props.assignment.uploaded) return (
             <Container>
                 <Segment>

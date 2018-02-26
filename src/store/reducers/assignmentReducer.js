@@ -30,13 +30,20 @@ function createTaskState(state = {
                 error: false
             };
 
-        case "CREATE_ASSIGNMENT_FULFILLED":
-        return {...state,
+        case "CREATE_ASSIGNMENT_FULFILLED": {
+            let answers = [];
+            let id = action.payload.data;
+            if(action.payload.data.answers){
+                answers = action.payload.data.answers;
+                id = action.payload.data.id;
+            }
+            return {...state,
                 assignment: {
-                    answers: [],
-                    id: action.payload.data
+                    answers: answers,
+                    id: id
                 }
             };
+        }
 
         case "CREATE_ASSIGNMENT_REJECTED":
         return {...state, error: true};
