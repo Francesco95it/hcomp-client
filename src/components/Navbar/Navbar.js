@@ -40,7 +40,7 @@ class Navbar extends Component {
             loginButton =
                 <Dropdown id='whitePls' item text={this.props.session.user.name}>
                     <Dropdown.Menu>
-                        <Dropdown.Item as={Link} to={`/profile/${this.props.session.user.id}`} ><Icon name="user circle"/> Profile</Dropdown.Item>
+                        <Dropdown.Item as={Link} to={`/profile`} ><Icon name="user circle"/> Profile</Dropdown.Item>
                         {createTask}
                         {manageTasks}
                         <Dropdown.Item onClick={this.onLogoutClick}><Icon name="external" /> Logout</Dropdown.Item>
