@@ -15,6 +15,7 @@ export default class Answer extends Component {
             loader: false
         }
         this.wheelLoaded = this.wheelLoaded.bind(this);
+        this.answerChosen = this.answerChosen.bind(this);
     }
 
     componentWillReceiveProps(){

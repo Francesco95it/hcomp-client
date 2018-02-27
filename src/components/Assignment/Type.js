@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 
-import Script from 'react-load-script'
 import {Form, Radio, Loader} from 'semantic-ui-react'
 
 export default class Type extends Component {
@@ -13,6 +12,7 @@ export default class Type extends Component {
             plutchLoaded: false,
             plutchCreated: false,
         }
+        this.changeAnswer = this.changeAnswer.bind(this);
     }
 
     componentWillMount(){
@@ -58,7 +58,7 @@ export default class Type extends Component {
                             label='Yes'
                             name='radioGroup'
                             checked={this.state.answer === 'Yes'}
-                            onChange={(e)=> {this.changeAnswer('Yes')}}
+                            onChange={(e)=> this.changeAnswer('Yes')}
                         />
                     </Form.Field>
                     <Form.Field>
@@ -66,7 +66,7 @@ export default class Type extends Component {
                             label='No'
                             name='radioGroup'
                             checked={this.state.answer === 'No'}
-                            onChange={(e)=> {this.changeAnswer('No')}}
+                            onChange={(e)=> this.changeAnswer('No')}
                         />
                     </Form.Field>
                 </Form>
