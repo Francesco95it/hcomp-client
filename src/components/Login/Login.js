@@ -126,7 +126,7 @@ class Login extends Component {
                 ><Icon name='google'/> Login with Google</GoogleLogin>
                 <br />
                 <br />
-                <Checkbox checked={this.state.isWriter} onClick={this.setWriter} label="Sign-in as writer"/>
+                <Checkbox checked={this.state.isWriter} onClick={this.setWriter} label="Sign-in as creator"/>
             </Segment>
         )
     }
