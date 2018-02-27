@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-import {Button, Icon, Transition, Segment, Header, Grid, Input, TextArea, Form, Radio, Loader, Dimmer} from 'semantic-ui-react'
+import {Button, Icon, Transition, Segment, Header, Grid, Input, TextArea, Form, Radio, Loader, Dimmer, Dropdown} from 'semantic-ui-react'
 import Dropzone from 'react-dropzone'
 
 import axios from 'axios'
@@ -153,6 +153,15 @@ export default class Runs extends Component {
         });
     }
 
+    changeMaxEmotions(index, max){
+        let runsCopy = this.state.runs;
+        runsCopy[index].max_emotions = max;
+        this.setState({
+            ...this.state,
+            runs: runsCopy
+        });
+    }
+
     uploadImage(index, i){
         const promise = new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -216,10 +225,6 @@ export default class Runs extends Component {
         })
         .catch(err => {
             console.log("Error deleting images: ",err);
-            // this.setState({
-            //     ...this.state,
-            //     error: err,
-            // });
         });
     }
 
@@ -279,15 +284,20 @@ export default class Runs extends Component {
         );
         return (
             <div>
-                <p>What is a run??</p>
+                <p style={{marginBottom:'0'}}>A Run is an istance of a task. You can create as many runs as you want.</p>
+                <p>Stick to your tasks argument. For each aspect of your research, create a run with the type that you need.</p>
                 <Button icon labelPosition='right' color='green' onClick={this.addRun}>
                     Add a run
                     <Icon name='add circle' />
                 </Button>
                 {this.state.runs.map((run)=>{
-                    console.log(run);
-                    if(this.state.runs[run.index].images.length > 0) {
-                        dropzone = this.state.runs[run.index].images.map((image, imgindex) => {
+                    let dropOptions = [];
+                    for(let i=1; i<33;i++) dropOptions[i-1]={
+                        text: i,
+                        value: i,
+                    };
+                    if(run.images.length > 0) {
+                        dropzone = run.images.map((image, imgindex) => {
                             const indexes = {
                                 index: run.index,
                                 imgindex: imgindex
@@ -311,7 +321,7 @@ export default class Runs extends Component {
                         );
                     }
                     return (
-                        <Segment.Group key={run.index}  piled>
+                        <Segment.Group key={run.id}  piled style={{marginBottom:'1em'}}>
                             <Segment onClick={(e)=>this.toggleRun(run.index, e)}>
                                 <Header size="small" content={run.name} style={{display: 'inline'}} />
                                 <Button circular color='red' icon='delete' compact size='mini' floated='right' onClick={(e)=>this.removeRun(run.index, e)}/>
@@ -360,6 +370,7 @@ export default class Runs extends Component {
                                                     />
                                                 </Form.Field>
                                             </Form>
+                                            {run.type.type === 8 ? <span>Maximum selectable emotions: {' '}<Dropdown scrolling inline options={dropOptions} defaultValue={run.max_emotions || 3} onChange={(e, opt)=>this.changeMaxEmotions(run.index, opt.value)} /></span> : null}
                                         </Grid.Column>
                                     </Grid>
                                 </Segment>

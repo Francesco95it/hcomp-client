@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import { sessionService } from 'redux-react-session'
 
-import {Segment, Image, Button} from 'semantic-ui-react'
+import {Segment, Image, Button, Container} from 'semantic-ui-react'
 import moment from 'moment'
 import axios from 'axios'
 
@@ -72,15 +72,17 @@ class Profile extends Component {
         if(this.state.personalProfile){
             let user = this.props.session.user;
             return (
-                <Segment textAlign='left' style={this.segmentAdj}>
-                <Image src={user.imageURL} floated='right' width='100px' style={{marginTop: '15px'}}/>
-                <h1 style={{marginTop: '10px'}}>{user.name}</h1>
-                <h4>Email: {user.email} <Button compact size='mini' style={{marginLeft: '10px'}}>Change</Button></h4>
-                <h2>Tasks in progress:</h2>
-                <TasksInProgress {...this.state} />
-                <h2>Tasks completed:</h2>
-                <TasksDone {...this.state} />
-                </Segment>
+                <Container>
+                    <Segment textAlign='left' style={this.segmentAdj}>
+                        <Image src={user.imageURL} floated='right' width='100px' style={{marginTop: '15px'}}/>
+                        <h1 style={{marginTop: '10px'}}>{user.name}</h1>
+                        <h4>Email: {user.email} <Button compact size='mini' style={{marginLeft: '10px'}}>Change</Button></h4>
+                        <h2>Tasks in progress:</h2>
+                        <TasksInProgress {...this.state} />
+                        <h2>Tasks completed:</h2>
+                        <TasksDone {...this.state} />
+                    </Segment>
+                </Container>
             );
         }
 

@@ -15,6 +15,7 @@ export default class Savepage extends Component {
                 introduction: run.introduction,
                 type: run.type.type,
                 question: run.type.question,
+                max_emotions: run.max_emotions,
                 index: run.index
             }});
             const newCollaborators = this.props.task.collaborators.list.map(collaborator => {return collaborator.id});

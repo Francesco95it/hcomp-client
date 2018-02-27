@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-import {Grid, Image, Header, Form, Radio, Button, Loader, Progress} from 'semantic-ui-react'
+import {Grid, Image, Header, Button, Loader, Progress} from 'semantic-ui-react'
 
 import Type from './Type'
 
