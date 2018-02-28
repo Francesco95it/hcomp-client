@@ -43,7 +43,7 @@ export default class Statistics extends Component {
         return (
             <Container>
                 <Segment>
-                    <Header content='Choose a task' />
+                    <Header content='Choose a run' />
                     {this.state.runs.map(run => {
                         return <RunStats key={run.index} tid={this.state.taskID} run={run} />
                     })}
