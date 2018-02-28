@@ -11,11 +11,17 @@ export default class Answer extends Component {
         this.state = {
             answer: null,
             answerChosen: false,
+            noEmotions: false,
             wheelLoaded: false,
             loader: false
         }
         this.wheelLoaded = this.wheelLoaded.bind(this);
         this.answerChosen = this.answerChosen.bind(this);
+        this.setNoEmotions = this.setNoEmotions.bind(this);
+    }
+
+    componentWillMount(){
+        window.maxElements = (this.props.maxEmotions || 32);
     }
 
     componentWillReceiveProps(){
@@ -26,6 +32,8 @@ export default class Answer extends Component {
                 ...this.state,
                 answer: null,
                 answerChosen: chosen,
+                noEmotions: false,
+                wheelLoaded: false,
                 loader: false
             })
         }, 500);
@@ -38,6 +46,13 @@ export default class Answer extends Component {
                 answerChosen:true
             })
         }
+    }
+
+    setNoEmotions(){
+        this.setState({
+            ...this.state,
+            noEmotions: !this.state.noEmotions
+        })
     }
 
     wheelLoaded(){
@@ -62,13 +77,31 @@ export default class Answer extends Component {
                 if(window.elemData.data[emo]) founded=true;
             }
             if(founded){
-                this.props.next({
-                    answer: window.elemData.data,
-                    imgname: this.props.image.name
-                });
+                if(this.state.noEmotions){
+                    alert('You can\'t select both emotions and no emotions.');
+                    this.setState({...this.state, loader: false});
+                } else {
+                    this.props.next({
+                        answer: {
+                            ...window.elemData.data,
+                            noEmotions: false
+                        },
+                        imgname: this.props.image.name
+                    });
+                }
             } else {
-                alert('Select at least one emotion');
-                this.setState({...this.state, loader: false});
+                if(this.state.noEmotions){
+                    this.props.next({
+                        answer: {
+                            ...window.elemData.data,
+                            noEmotions: true
+                        },
+                        imgname: this.props.image.name
+                    });
+                } else {
+                    alert('Select at least one emotion');
+                    this.setState({...this.state, loader: false});
+                }
             }
         } else {
             this.props.next({
@@ -98,7 +131,7 @@ export default class Answer extends Component {
                             <Header content={this.props.question} size='medium' style={{marginTop: 0}}/>
                         </Grid.Row>
                         <Grid.Row style={{marginTop: '1em'}}>
-                            <Type type={this.props.type} answerChosen={this.answerChosen} percent={this.props.percent}/>
+                            <Type type={this.props.type} answerChosen={this.answerChosen} percent={this.props.percent} noEmotions={this.state.noEmotions} setNoEmotions={this.setNoEmotions}/>
                         </Grid.Row>
                         <Grid.Row style={{position: 'absolute', right: '0', bottom: '0', marginRight: '10px'}}>
                             <Grid.Column width={16}>

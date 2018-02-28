@@ -29,7 +29,6 @@ export default class Savepage extends Component {
                 tutorial: task.tutorial,
                 is_active: task.status
             }
-            console.log(prepTask);
             this.props.uploadTask(prepTask);
         }, 500);
     }

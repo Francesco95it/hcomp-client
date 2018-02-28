@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-import {Form, Radio, Loader} from 'semantic-ui-react'
+import {Form, Radio, Loader, Checkbox} from 'semantic-ui-react'
 
 export default class Type extends Component {
 
@@ -43,6 +43,7 @@ export default class Type extends Component {
         })
         const head = document.getElementsByTagName('head')[0];
         const script = document.createElement('script');
+        script.id = window.connectScript;
         script.type = 'text/javascript';
         script.src = `${window.location.protocol}//${window.location.host}/renderScript.js`;
         head.appendChild(script);
@@ -77,7 +78,9 @@ export default class Type extends Component {
                 return(
                     <div>
                         <div id={'drawer'+window.connectScript} style={{maxWidth: '90%'}}></div>
-                    </div>)}
+                        <Checkbox label='No emotions (neutral)' checked={this.props.noEmotions} onChange={()=>this.props.setNoEmotions()}/>
+                    </div>)
+                }
 
             default:
 

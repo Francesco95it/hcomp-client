@@ -56,6 +56,7 @@ class CreateTask extends Component {
                             question: run.question,
                             type: run.id_runtype
                         },
+                        max_emotions: (run.max_emotions || 3),
                         index: run.index,
                     }
                 }));

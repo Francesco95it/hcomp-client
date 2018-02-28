@@ -31,6 +31,7 @@ class Assignment extends Component {
         this.handleModalClose = this.handleModalClose.bind(this);
     }
 
+
     componentDidMount(){
         const params = new URLSearchParams(this.props.location.search);
         if(params.get('rid') && params.get('tid')){
@@ -179,6 +180,7 @@ class Assignment extends Component {
                     <Answer
                         image={runData.images[this.state.position]}
                         type={runData.id_runtype}
+                        maxEmotions={runData.max_emotions}
                         question={runData.question}
                         percent={percent}
                         isLast={this.state.position === this.state.imgNumber-1}

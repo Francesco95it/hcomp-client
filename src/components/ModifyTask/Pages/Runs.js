@@ -31,7 +31,7 @@ export default class Runs extends Component {
     constructor(props){
         super(props);
         this.state = {
-            runs: (this.props.task.runs),
+            runs: (this.props.task.runs.sort((a,b)=>{return a.index - b.index})),
             loader: false,
             error: false
         }
@@ -70,6 +70,7 @@ export default class Runs extends Component {
                         question: "",
                         type: 7
                     },
+                    max_emotions: 3,
                     index: this.state.runs.length,
                     hided: false
                 }]
