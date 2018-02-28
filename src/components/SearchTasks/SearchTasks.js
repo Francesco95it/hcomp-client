@@ -67,8 +67,7 @@ class SearchTasks extends Component {
     componentDidMount(){
         axios.get(`/tasks`)
         .then(res => {
-            console.log(res);
-            const filteredRes = res.data.filter(task => {return task.name!==null});
+            const filteredRes = res.data.filter(task => {return (task.name!==null && task.is_active)});
             this.setState({
                 ...this.state,
                 tasks: filteredRes,

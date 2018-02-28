@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 
-import {Redirect} from 'react-router-dom'
-import {Image, List, Button} from 'semantic-ui-react'
+import {Redirect, Link} from 'react-router-dom'
+import {Image, List, Button, Popup} from 'semantic-ui-react'
 
 export default class TaskLi extends Component {
 
@@ -31,8 +31,18 @@ export default class TaskLi extends Component {
                         </List.Header>
                         <List.Description>{this.props.task.description}</List.Description>
                     </List.Content>
-                    <Button circular color='red' icon='delete' compact size='mini' floated='right' onClick={(e)=>this.props.deleteTask(e, this.props.task.id)}/>
-                    <Button circular color='teal' icon='edit' compact size='mini' floated='right' onClick={(e)=>this.onEditClick(e)}/>
+                    <Popup
+                        trigger={<Button circular color='red' icon='delete' compact size='mini' floated='right' onClick={(e)=>this.props.deleteTask(e, this.props.task.id)}/>}
+                        content='Delete task'
+                    />
+                    <Popup
+                        trigger={<Button circular color='teal' icon='edit' compact size='mini' floated='right' onClick={(e)=>this.onEditClick(e)}/>}
+                        content='Edit task'
+                    />
+                    <Popup
+                        trigger={<Button circular color='green' icon='flag' compact size='mini' floated='right' as={Link} to={`/statistics?tid=${this.props.task.id}`} />}
+                        content='See results'
+                    />
                 </List.Item>
     }
 }
