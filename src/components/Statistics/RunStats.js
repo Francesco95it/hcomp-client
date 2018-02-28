@@ -9,6 +9,7 @@ export default class RunStats extends Component {
         this.state = {
             stats: null,
             hided: true,
+            totalAssignments: null,
             loading: false
         }
     }
@@ -86,6 +87,7 @@ export default class RunStats extends Component {
             </Segment>
             <Transition visible={!this.state.hided}  animation='fade down' duration={500}>
                 <Segment>
+                    <Header color='teal' content={`Total assignments completed: ${this.state.totalAssignments}`} />
                     <Grid divided="vertically" verticalAlign='middle'>
                         {!this.state.hided? this.state.stats.map(stat => {
                             if(stat === -1) return <Header key={1} color='teal' content='No assignments has been completed!' />

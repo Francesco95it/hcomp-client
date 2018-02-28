@@ -1,4 +1,6 @@
-console.log(window.maxElements);
+window.elemData = {
+    data: null
+};
 Plutchik({
     element: '#drawer'+window.connectScript,
     labels: [
