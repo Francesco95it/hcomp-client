@@ -56,7 +56,7 @@ class TaskPage extends Component {
     render(){
         if(this.state.error) return <Header color='red'>An error has happened. Please try again later.</Header>
         if(!this.state.taskFetched) return <Segment loading style={{minHeight: '200px'}} />
-        if(!this.state.task.is_active) return <Redirect to='/' />
+        if(!this.state.task.is_live) return <Redirect to='/' />
         console.log(this.state.task);
         return(
             <Container>

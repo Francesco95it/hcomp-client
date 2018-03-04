@@ -27,7 +27,8 @@ export default class Savepage extends Component {
                 runs: newRuns,
                 collaborators: newCollaborators,
                 tutorial: task.tutorial,
-                is_active: task.status
+                is_live: task.status.is_live,
+                is_public: task.status.is_public
             }
             this.props.uploadTask(prepTask);
         }, 500);

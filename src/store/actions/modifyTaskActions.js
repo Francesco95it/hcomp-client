@@ -41,7 +41,10 @@ const taskStructurer = (task) => {
             error: null
         },
         tutorial: task.tutorial.map(step => JSON.parse(step)),
-        status: task.is_active
+        status: {
+            is_live: task.is_live,
+            is_public: task.is_public
+        }
     }
 }
 

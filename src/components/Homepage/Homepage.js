@@ -25,25 +25,20 @@ class Homepage extends Component {
         .then(res => {
             this.setState({
                 ...this.state,
-                recentTasks: res.data,
+                recentTasks: res.data.filter(task => {return task.is_public && task.is_live && task.name}),
                 fetchedRecent: true
             })
         })
         .catch(err => console.log(err));
         axios.get(`/tasks?filter=recentTasksByAssignments`)
         .then(res => {
-            console.log(res);
-            let data = res.data;
             this.setState({
                 ...this.state,
-                recentTasksByAssignments: data,
+                recentTasksByAssignments: res.data.filter(task => {return task.is_public && task.is_live && task.name}),
                 fetchedRecentAssignments: true,
             })
         })
         .catch((err)=>console.log(err));
-        // setInterval(()=>{
-        //     if(window.elemData) console.log(window.elemData);
-        // }, 1000)
     }
 
     render(){

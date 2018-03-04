@@ -1,3 +1,0 @@
-Plutchik({
-    element: '#drawer'
-});

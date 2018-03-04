@@ -17,7 +17,10 @@ const taskStructure = {
         error: null
     },
     tutorial: [],
-    status: false,
+    status: {
+        is_live: false,
+        is_public: false
+    },
 }
 
 function createTaskState(state = {
